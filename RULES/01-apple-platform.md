@@ -19,6 +19,7 @@
 
 - 新 UI 优先 SwiftUI
 - 既有 UIKit 模块继续遵循 UIKit 风格
+- 列表布局优先使用`UICompositionalLayout`和`UICollectionViewDiffableDataSource`
 - 混合场景下优先最小侵入集成，而不是大改
 
 ### 异步

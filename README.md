@@ -51,6 +51,7 @@ Use `CLAUDE.md` as the project instruction entry, or copy its contents into the 
 - `CHATGPT.md`: compact ChatGPT instruction pack
 - `CODEX.md`: Codex-specific operating rules
 - `CLAUDE.md`: Claude-specific operating rules
+- `REPOSITORY_GUIDE.md`: full file/folder explanation map
 - `RULES/`: modular deep rules
 - `PROMPTS/`: reusable prompts
 - `templates/`: starter snippets you can paste into tools
