@@ -1,0 +1,1 @@
+Use @StateObject for owned ViewModel.

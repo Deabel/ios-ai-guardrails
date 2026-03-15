@@ -1,0 +1,1 @@
+Use MVVM. Views only render UI.

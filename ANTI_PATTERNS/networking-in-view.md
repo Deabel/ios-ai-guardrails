@@ -1,3 +1,1 @@
-# Networking in View
-
-SwiftUI views must not perform network requests directly.
+Do not perform networking in SwiftUI views.

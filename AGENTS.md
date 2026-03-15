@@ -1,26 +1,13 @@
-# iOS AI Engineering Rules
 
-This repository defines coding guardrails for AI coding assistants.
+# iOS AI Guardrails v4
 
-Applies to:
-- ChatGPT
-- Claude
-- Xcode Codex
-- Claude Agent
+Primary stack:
+Swift, SwiftUI, MVVM, async/await
 
-Language: Swift
-Architecture: MVVM
-UI Framework: SwiftUI
-Concurrency: Swift Structured Concurrency
-
-Load the following rules before generating code:
-
-RULES/architecture.md
-RULES/concurrency.md
-RULES/networking.md
-RULES/swiftui.md
-RULES/testing.md
-
-Check ANTI_PATTERNS before finalizing any implementation.
-Prefer patterns defined in TEMPLATES.
-Follow WORKFLOWS/feature-development.md for development tasks.
+Workflow:
+1. Load this file
+2. Check RULE_INDEX.md
+3. Follow rules
+4. Avoid ANTI_PATTERNS
+5. Prefer TEMPLATES
+6. Validate via CHECKS
