@@ -1,60 +1,80 @@
-# iOS AI Guardrails v5
+# iOS AI Guardrails v6.1 Custom
 
-一套面向 iOS / Swift / SwiftUI / Xcode 的 AI 代码生成规范仓库，适用于：
+A customized, cross-tool guardrails repository for Apple-platform development.
+
+This version is tuned for an iOS engineer workflow that prefers:
+
+- Swift first
+- Swift Concurrency first
+- SwiftUI first for new UI
+- UIKit compatibility for existing modules
+- MVVM as the default application-layer shape
+- Apple-style naming and API design
+- pragmatic refactors instead of speculative rewrites
+- code that can actually land in a production app
+
+## Goals
+
+Use one shared rule system across:
 
 - ChatGPT
-- Claude
 - Xcode Codex
-- Claude Agent
+- Claude / Claude Code
+- other agent-style tools that can read `AGENTS.md`
 
-## 目标
+## Recommended usage
 
-让 AI 生成代码时遵守统一的工程规则，而不是每次靠 prompt 碰运气。
+### ChatGPT
 
-## 主要技术栈
+Copy `CHATGPT.md` into your custom instructions, then paste in project-specific context when needed.
 
-- Swift
-- SwiftUI
-- MVVM
-- Swift Structured Concurrency (`async/await`)
+### Xcode Codex
 
-## 目录结构
+Use either:
 
-- `AGENTS.md`：主入口
-- `RULE_INDEX.md`：规则索引
-- `RULES/`：规则正文
-- `ANTI_PATTERNS/`：反模式
-- `TEMPLATES/`：模板
-- `EXAMPLES/`：示例
-- `WORKFLOWS/`：AI 工作流
-- `CHECKS/`：生成前后检查
-- `PROMPTS/`：辅助提示
+- project-level `AGENTS.md` at repo root, or
+- global `~/.codex/AGENTS.md`
 
-## 在 ChatGPT 中使用
-
-把下面内容放到 Custom Instructions：
-
-Follow iOS AI coding rules:
-https://raw.githubusercontent.com/<yourname>/ios-ai-guardrails/main/AGENTS.md
-
-## 在 Xcode Codex 中使用
-
-创建：
-
-~/.codex/AGENTS.md
-
-内容：
-
-Load global iOS AI rules:
-https://raw.githubusercontent.com/<yourname>/ios-ai-guardrails/main/AGENTS.md
-
-## 上传 GitHub
+You can install the global variant with:
 
 ```bash
-git init
-git add .
-git commit -m "Add iOS AI Guardrails v5"
-git branch -M main
-git remote add origin https://github.com/<yourname>/ios-ai-guardrails.git
-git push -u origin main
+bash scripts/install-codex-global.sh
 ```
+
+### Claude
+
+Use `CLAUDE.md` as the project instruction entry, or copy its contents into the tool's project instructions.
+
+## Structure
+
+- `AGENTS.md`: single source of truth
+- `CHATGPT.md`: compact ChatGPT instruction pack
+- `CODEX.md`: Codex-specific operating rules
+- `CLAUDE.md`: Claude-specific operating rules
+- `RULES/`: modular deep rules
+- `PROMPTS/`: reusable prompts
+- `templates/`: starter snippets you can paste into tools
+- `examples/`: concrete usage examples
+- `scripts/`: installation helpers
+
+## What changed in v6.1 custom
+
+This custom edition strengthens:
+
+- MVVM-oriented layering
+- async/await and actor guidance
+- UIKit + SwiftUI coexistence rules
+- repository / service / persistence boundaries
+- UserDefaults placement rules
+- API client reuse rules
+- Chinese team-comment guidance
+- copyable response format expectations for AI tools
+- review checklist items for crash risk, thread-safety, migration risk, and test impact
+
+## Suggested operating pattern
+
+1. Put `AGENTS.md` in the project root.
+2. Add project-specific constraints below the “Local Project Addendum” section.
+3. Keep rules short and enforceable.
+4. Put long explanations in `RULES/`.
+5. Reuse the prompt templates from `PROMPTS/` instead of rewriting the same ask every time.
