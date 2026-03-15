@@ -1,46 +1,46 @@
 # Security & Compliance
 
-面向 AI 生成代码的安全与合规基线。
+Security and compliance baseline for AI-generated code.
 
-## 目标
+## Goals
 
-- 默认安全（secure by default）
-- 最小暴露（least privilege）
-- 可追踪（auditable）
+- secure by default
+- least privilege
+- auditable changes
 
-## 敏感信息处理
+## Sensitive Data Handling
 
-- 禁止在代码中硬编码密钥、token、证书私钥、生产账号信息。
-- 禁止在日志中输出 PII、token、完整请求体/响应体。
-- 对用户标识、设备标识、地理位置、支付信息按敏感信息处理，除非项目规则明确豁免。
-- 示例代码里的占位符必须使用 `YOUR_API_KEY` 这类显式占位符，不得看起来像真实凭据。
+- Never hardcode secrets, tokens, private keys, or production credentials in code.
+- Never log PII, tokens, or full request/response payloads.
+- Treat user IDs, device IDs, location, and payment data as sensitive unless explicitly exempted by project policy.
+- Example placeholders must be explicit (for example, `YOUR_API_KEY`) and must not resemble real credentials.
 
-## iOS 存储与权限
+## iOS Storage and Permissions
 
-- 敏感凭据使用 Keychain，不写入 `UserDefaults`。
-- `UserDefaults` 仅用于低敏配置（UI 偏好、开关状态等）。
-- 新增系统权限（相机、麦克风、定位、通讯录等）时，必须说明业务目的与最小使用范围。
-- 权限请求时机应与用户触发行为关联，避免冷启动即请求。
+- Store sensitive credentials in Keychain, not `UserDefaults`.
+- Use `UserDefaults` only for low-sensitivity config (UI preferences, toggles, etc.).
+- When adding system permissions (camera, microphone, location, contacts, etc.), document business purpose and minimum scope.
+- Permission prompts should be user-intent-driven, not shown at cold start without context.
 
-## 网络与第三方依赖
+## Networking and Third-Party Dependencies
 
-- 复用现有网络层，不引入平行网络栈。
-- 明确区分传输错误、解码错误、业务错误。
-- 新增第三方依赖前，确认许可证兼容与维护状态。
-- 不为小问题引入重依赖，优先本地最小实现。
+- Reuse the existing networking layer; do not add parallel network stacks.
+- Keep transport errors, decoding errors, and business errors clearly separated.
+- Validate license compatibility and maintenance status before adding third-party dependencies.
+- Avoid heavy dependencies for small problems; prefer minimal local implementations.
 
-## AI 任务中的合规声明
+## Compliance Notes in AI Tasks
 
-当任务涉及以下场景时，输出中必须显式说明假设和风险：
+When tasks involve the scenarios below, explicitly state assumptions and risks:
 
-- 隐私数据采集/上传
-- 支付、身份认证、账号体系
-- 未成年人、医疗、金融等监管场景
-- 跨境数据传输
+- privacy data collection/upload
+- payments, authentication, or account systems
+- regulated domains (minors, healthcare, finance, etc.)
+- cross-border data transfer
 
-建议输出结构：
+Recommended output structure:
 
-1. 已知约束
-2. 假设
-3. 风险点
-4. 缓解措施
+1. Known constraints
+2. Assumptions
+3. Risks
+4. Mitigations

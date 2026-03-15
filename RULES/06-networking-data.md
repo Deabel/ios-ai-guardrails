@@ -2,52 +2,52 @@
 
 ## Networking
 
-### 规则
+### Rules
 
-- 优先复用现有 APIClient / NetworkService
-- 检查 HTTP 状态码
-- 区分传输错误、业务错误、解码错误
-- decode 到明确模型，不要到处 `[String: Any]`
+- Reuse existing `APIClient` / `NetworkService` whenever possible.
+- Validate HTTP status codes.
+- Distinguish transport errors, business errors, and decoding errors.
+- Decode into explicit models; avoid widespread `[String: Any]`.
 
-### 避免
+### Avoid
 
-- 页面里直接拼 URLSession 请求
-- 一次请求链条里散落多处 JSON 解析
-- 无上下文错误日志
+- constructing `URLSession` requests directly inside screens
+- scattered JSON parsing across a single request flow
+- context-free error logging
 
 ## UserDefaults
 
-UserDefaults 适合：
+Good use cases for UserDefaults:
 
-- 轻量配置
-- 用户偏好
-- 简单开关
-- 小体积缓存标记
+- lightweight settings
+- user preferences
+- simple feature toggles
+- small cache markers
 
-不适合：
+Not suitable for:
 
-- 复杂对象仓储
-- 核心业务数据存储
-- 到处随手写
+- complex object storage
+- core business data
+- scattered write calls across the codebase
 
-建议：
+Recommended:
 
-- 集中封装
+- centralized wrapper/store
 - typed key
-- 明确默认值策略
+- explicit default-value strategy
 
-## 数据库
+## Database
 
-数据库访问放在 store / repository / manager 等边界中。
+Place database access in boundaries such as store/repository/manager.
 
-不要让 UI 层知道表结构或底层 query 细节。
+Do not expose table schemas or low-level query details to the UI layer.
 
-## 映射策略
+## Mapping Strategy
 
-优先简单清晰：
+Prefer clear and simple layering:
 
-- DTO：网络传输模型
-- Domain：业务模型（必要时）
-- ViewData：视图专属展示模型（必要时）
+- DTO: transport model
+- Domain: business model (when needed)
+- ViewData: presentation model for views (when needed)
 
-如果三层映射并没有带来边界收益，就不要机械上齐。
+Do not force a three-layer mapping setup if it does not create real boundary value.

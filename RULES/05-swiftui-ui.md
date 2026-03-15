@@ -2,62 +2,62 @@
 
 ## SwiftUI
 
-### 视图职责
+### View Responsibilities
 
-View 负责：
+View should handle:
 
-- 描述 UI
-- 绑定状态
-- 转发用户事件
+- UI declaration
+- state binding
+- forwarding user intent/events
 
-View 不负责：
+View should not handle:
 
-- 直接访问网络
-- 直接写持久化
-- 承担复杂业务推导
+- direct networking
+- direct persistence writes
+- complex business reasoning
 
-### 状态选择
+### State Wrapper Choice
 
-按所有权选择：
+Choose based on ownership:
 
-- `@State`：本地拥有且轻量
-- `@Binding`：父层传入可变绑定
-- `@StateObject`：本视图拥有引用类型生命周期
-- `@ObservedObject`：外部注入
-- `@Environment` / `@EnvironmentObject`：环境依赖
+- `@State`: lightweight local ownership
+- `@Binding`: mutable binding from parent
+- `@StateObject`: reference-type lifecycle owned by this view
+- `@ObservedObject`: dependency injected from outside
+- `@Environment` / `@EnvironmentObject`: environment-provided dependencies
 
-### 视图拆分
+### View Extraction
 
-提取子视图的理由应该是：
+Extract subviews when it improves:
 
-- 复用
-- 可读性
-- 单元测试或预览价值
+- reuse
+- readability
+- testing or preview value
 
-不要只因为 `body` 看起来长就机械拆分成一堆名字空洞的小 View。
+Do not split mechanically just because `body` looks long.
 
 ## UIKit
 
-### ViewController 要瘦
+### Keep ViewControllers Thin
 
-优先拆出：
+Prefer separating:
 
 - `setupUI()`
 - `setupConstraints()`
 - `bindViewModel()`
 - `setupActions()`
 
-### 避免 Massive ViewController
+### Avoid Massive ViewControllers
 
-网络、数据库、复杂 mapping、业务规则都不应该直接塞在控制器里。
+Networking, database operations, complex mapping, and business rules should not live directly in controllers.
 
-## UI 通用要求
+## Common UI Requirements
 
-任何较完整页面都应考虑：
+Most complete screens should consider:
 
 - loading
 - empty
 - error
 - success
 - accessibility basics
-- dynamic type / localization 风险
+- dynamic type and localization risks

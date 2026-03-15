@@ -1,45 +1,45 @@
 # Core Principles
 
-## 目标
+## Goal
 
-AI 生成的代码必须优先满足：
+AI-generated code must prioritize:
 
-- 可读
-- 可维护
-- 可验证
-- 与现有工程一致
-- 对真实业务有帮助
+- readability
+- maintainability
+- verifiability
+- consistency with the existing project
+- usefulness for real product work
 
-不是为了“看起来高级”。那种代码往往像穿西装打螺丝，仪式感很足，效果未必好。
+Do not optimize for code that only "looks advanced." It often adds ceremony without real value.
 
-## 生成代码前必须先做的事
+## Required Checks Before Generating Code
 
-1. 判断当前工程是增量修改还是新模块建设。
-2. 识别现有模式：MVVM、Coordinator、Service、Store、Manager 等。
-3. 优先复用已有模式，而不是重造一套“更优雅”的世界观。
-4. 如果上下文不完整，要明确说明假设。
+1. Determine whether the task is an incremental change or a new module.
+2. Identify existing patterns (MVVM, Coordinator, Service, Store, Manager, etc.).
+3. Reuse established patterns before introducing a new architecture.
+4. If context is incomplete, state assumptions explicitly.
 
-## 基本决策原则
+## Core Decision Principles
 
-### 原则 1：贴合当前项目
+### Principle 1: Fit the Existing Project
 
-优先级高于“理论上最优”。
+This takes priority over "theoretically optimal" design.
 
-### 原则 2：小步修改
+### Principle 2: Small Changes
 
-能改 1 个文件就别拆 8 个文件。
+If one file can solve it, do not split it into eight.
 
-### 原则 3：显式表达
+### Principle 3: Make Important Things Explicit
 
-不要把重要状态、错误、线程/隔离边界藏起来。
+Do not hide critical state, errors, or concurrency/isolation boundaries.
 
-### 原则 4：抽象要有消费者
+### Principle 4: Every Abstraction Needs a Consumer
 
-没有明确复用需求，就不要提前造协议、基类、适配层。
+Do not add protocols, base classes, or adapters without clear reuse demand.
 
-### 原则 5：不要编造
+### Principle 5: Do Not Invent
 
-不要杜撰：
+Do not fabricate:
 
 - API
 - framework capability
@@ -48,12 +48,12 @@ AI 生成的代码必须优先满足：
 - build command
 - network schema
 
-## 推荐回答结构
+## Recommended Response Structure
 
-当 AI 输出方案时，推荐结构如下：
+When the AI provides a solution, prefer this structure:
 
-1. 简述判断
-2. 给出推荐方案
-3. 提供完整代码/补丁
-4. 简要说明调用方影响
-5. 说明测试点
+1. Brief assessment
+2. Recommended approach
+3. Complete code/patch
+4. Call-site impact summary
+5. Test points

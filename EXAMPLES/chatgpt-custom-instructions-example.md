@@ -1,8 +1,8 @@
-# ChatGPT 自定义指令示例
+# ChatGPT Custom Instructions Example
 
-把 `CHATGPT.md` 内容复制到 ChatGPT 自定义指令中。
+Copy the contents of `CHATGPT.md` into your ChatGPT custom instructions.
 
-如果你还想增加更强的个人偏好，可以在其后追加：
+If you want stronger personal/team preferences, append:
 
 ```text
 Additional team rules:

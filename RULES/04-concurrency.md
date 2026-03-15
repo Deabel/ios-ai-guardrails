@@ -1,10 +1,10 @@
 # Concurrency
 
-## 核心原则
+## Core Principle
 
-优先使用 Swift 结构化并发。
+Prefer Swift structured concurrency.
 
-### 优先选择
+### Preferred
 
 - `async/await`
 - `Task {}`
@@ -13,49 +13,49 @@
 - `actor`
 - `@MainActor`
 
-### 谨慎使用
+### Use Carefully
 
 - `Task.detached`
-- GCD 与 Swift Concurrency 混搭
-- 手写锁
+- mixing GCD with Swift Concurrency
+- manual lock-based synchronization
 
-## 重要认知
+## Key Mental Models
 
-### 不要把 async 理解为“子线程函数”
+### `async` Does Not Mean "Runs on a Child Thread"
 
-`async` 表示挂起点与异步语义，不等于固定线程执行。
+`async` means suspension-capable asynchronous semantics, not fixed-thread execution.
 
-### 不要把 actor 理解为“后台线程对象”
+### `actor` Is Isolation, Not a Background Thread
 
-actor 的核心是隔离，不是线程标签。
+The key property of actors is isolation, not thread identity.
 
-## 共享状态
+## Shared State
 
-有共享可变状态时，优先考虑：
+When mutable state is shared, prefer:
 
 - actor
-- 明确所有权
-- 单线程隔离模型
+- explicit ownership
+- single-owner isolation model
 
-避免多个任务随意读写同一份可变数据。
+Avoid unconstrained concurrent reads/writes on the same mutable data.
 
-## UI 更新
+## UI Updates
 
-涉及 UI 或 ViewModel 中可观察状态时，优先明确 `@MainActor`。
+For UI or observable ViewModel state, prefer explicit `@MainActor` isolation.
 
-## 取消
+## Cancellation
 
-异步任务设计时要考虑：
+When designing async tasks, consider:
 
-- 是否需要取消
-- 取消后资源是否会泄漏
-- 结果是否可能回写到过期页面/对象
+- whether cancellation is needed
+- whether resources can leak after cancellation
+- whether stale tasks can write back to expired screens/objects
 
-## 审查点
+## Review Points
 
-在 review 中重点看：
+In reviews, focus on:
 
-- 有没有主线程阻塞
-- 有没有竞态条件
-- 有没有过度 detached
-- 有没有跨隔离误用
+- main-thread blocking
+- race conditions
+- overuse of detached tasks
+- actor/isolation misuse

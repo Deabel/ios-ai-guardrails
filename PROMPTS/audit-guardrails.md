@@ -1,17 +1,18 @@
 # Audit Guardrails Repository
 
-请基于 `AGENTS.md` 与 `RULES/` 对当前规范仓库做一次审计，目标是发现“可读但不可执行”的规则并给出可落地改进。
+Audit this spec repository based on `AGENTS.md` and `RULES/`.
+The goal is to find rules that are readable but not actionable, then propose practical improvements.
 
-输出格式：
+Output format:
 
-1. 关键问题（按严重程度排序）
-2. 对应风险（错误代码、架构漂移、并发问题、合规风险）
-3. 最小改进补丁建议（文件级别）
-4. 缺失模板/示例（如 PR checklist、迁移指南、风险分级）
-5. 推荐下一个版本号（并说明理由）
+1. Key issues (ordered by severity)
+2. Associated risks (incorrect code, architecture drift, concurrency risks, compliance risks)
+3. Smallest patch-level improvements (file-level)
+4. Missing templates/examples (for example, PR checklist, migration guide, risk tiers)
+5. Recommended next version (with rationale)
 
-审计要求：
+Audit requirements:
 
-- 不重写整套规范，优先小步增强。
-- 结论需指向具体文件，不要只给抽象建议。
-- 若有冲突，以 `AGENTS.md` 为准并注明冲突点。
+- Do not rewrite the entire spec; prioritize incremental improvements.
+- Findings must point to specific files, not abstract suggestions only.
+- If conflicts exist, follow `AGENTS.md` and explicitly note the conflict points.

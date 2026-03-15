@@ -1,8 +1,8 @@
-# Claude 项目示例
+# Claude Project Example
 
-把 `CLAUDE.md` 放到项目根目录，或复制其内容作为项目指令。
+Place `CLAUDE.md` in the project root, or copy its content into Claude project instructions.
 
-示例任务：
+Example task:
 
 ```text
 Review the sync pipeline for concurrency risks.

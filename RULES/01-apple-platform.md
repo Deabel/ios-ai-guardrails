@@ -1,42 +1,42 @@
 # Apple Platform Defaults
 
-## 语言优先级
+## Language Priority
 
-默认优先：
+Default order:
 
 1. Swift
-2. Objective-C（仅限既有模块、桥接边界、遗留代码）
+2. Objective-C (only for legacy modules, bridge boundaries, or old code)
 
-新代码不要默认回退到 Objective-C，除非：
+Do not default to Objective-C for new code unless:
 
-- 当前模块几乎全部是 Objective-C
-- 需要与旧 SDK / 旧 runtime 约束保持一致
-- 任务本身明确要求 Objective-C
+- the current module is almost entirely Objective-C
+- legacy SDK/runtime constraints require it
+- the task explicitly requests Objective-C
 
-## 平台框架优先级
+## Framework Priority
 
 ### UI
 
-- 新 UI 优先 SwiftUI
-- 既有 UIKit 模块继续遵循 UIKit 风格
-- 列表布局优先使用`UICompositionalLayout`和`UICollectionViewDiffableDataSource`
-- 混合场景下优先最小侵入集成，而不是大改
+- Prefer SwiftUI for new UI.
+- Keep existing UIKit modules in UIKit style.
+- For list layouts, prefer `UICompositionalLayout` and `UICollectionViewDiffableDataSource`.
+- In mixed stacks, prioritize minimal-intrusion integration over broad rewrites.
 
-### 异步
+### Async
 
-- 优先 Swift Concurrency
-- Combine 仅在项目已经使用，或流式组合明显更合适时使用
-- 不要为了“现代化”硬把简单回调链改成复杂流式管线
+- Prefer Swift Concurrency.
+- Use Combine only when already established in the project or clearly better for stream composition.
+- Do not "modernize" simple callback flows into complex reactive pipelines without need.
 
-### 数据建模
+### Data Modeling
 
-- `Codable` 作为默认选择
-- 只在确有必要时增加 DTO / Domain / ViewData 多层映射
+- Use `Codable` by default.
+- Add DTO/Domain/ViewData layering only when it provides concrete value.
 
-## Apple 风格约束
+## Apple-Style Constraints
 
-- 命名清晰、自然、符合 Swift API Design Guidelines
-- 优先值类型
-- UI 更新与状态变更隔离清楚
-- `@MainActor` 用于 UI 相关状态和接口
-- 避免主线程阻塞型 I/O
+- Keep naming clear and natural, aligned with Swift API Design Guidelines.
+- Prefer value types when appropriate.
+- Keep UI updates and state mutation boundaries explicit.
+- Use `@MainActor` for UI-facing state and APIs.
+- Avoid main-thread-blocking I/O.

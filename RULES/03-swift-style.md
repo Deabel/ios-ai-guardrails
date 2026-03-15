@@ -1,66 +1,66 @@
 # Swift Style
 
-## 总体风格
+## Overall Style
 
-代码应该让团队成员一眼能读懂。
+Code should be understandable at a glance by teammates.
 
-### 推荐
+### Prefer
 
-- 小类型
-- 小函数
-- 早返回
-- 意图明确的命名
-- 默认不可变
-- 明确访问控制
+- small, focused types
+- small functions
+- early returns
+- intention-revealing names
+- immutability by default
+- explicit access control
 
-### 避免
+### Avoid
 
-- 过深嵌套
-- 超长函数
-- 一个 extension 塞满无关职责
-- 为炫技而写的泛型或协议体操
-- 没有注释说明前提的强制解包
+- deep nesting
+- very long functions
+- extensions with unrelated responsibilities
+- clever generics/protocol gymnastics that hurt readability
+- force unwraps without documented invariants
 
-## 命名
+## Naming
 
-- 类型：`PascalCase`
-- 变量 / 方法 / 属性：`camelCase`
-- 布尔值：`is...` / `has...` / `can...` / `should...`
+- Types: `PascalCase`
+- Variables/methods/properties: `camelCase`
+- Booleans: `is...` / `has...` / `can...` / `should...`
 
-## 可选值处理
+## Optional Handling
 
-优先：
+Prefer:
 
 - `guard let`
 - `if let`
-- 明确的默认值
-- 明确错误抛出
+- explicit defaults
+- explicit error throwing
 
-避免：
+Avoid:
 
-- 到处 `!`
-- 静默 `??` 掩盖真正错误
+- pervasive `!`
+- silent `??` that hides real problems
 
-## 错误处理
+## Error Handling
 
-优先：
+Prefer:
 
 - `throws`
 - `Result`
-- 携带上下文的错误日志
+- error logs with useful context
 
-避免：
+Avoid:
 
-- 空 `catch`
-- 随手 `try?`
-- 所有错误都变成 `nil`
+- empty `catch`
+- casual `try?` on meaningful operations
+- converting all errors into `nil`
 
-## 注释
+## Comments
 
-注释要解释：
+Comments should explain:
 
-- 为什么这样做
-- 有什么边界条件
-- 有什么约束或坑
+- why the approach was chosen
+- boundary conditions
+- constraints or pitfalls
 
-不要注释显而易见的代码。
+Do not comment obvious code.

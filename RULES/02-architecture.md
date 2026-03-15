@@ -1,71 +1,71 @@
 # Architecture
 
-## 默认分层
+## Default Layers
 
-推荐默认分层：
+Recommended default layers:
 
-- View / ViewController：负责显示与事件转发
-- ViewModel / Presenter：负责视图状态和交互编排
-- Service / UseCase：负责业务逻辑
-- Repository / Store：负责数据来源整合与持久化访问
-- Client：负责网络 / 数据库 / 三方 SDK 原始调用
+- View / ViewController: rendering and event forwarding
+- ViewModel / Presenter: presentation state and interaction orchestration
+- Service / UseCase: business logic
+- Repository / Store: data-source integration and persistence access
+- Client: low-level network/database/third-party SDK calls
 
-## 规则
+## Rules
 
-### UI 层禁止事项
+### UI Layer Prohibitions
 
-不要在 View / ViewController 中直接：
+Do not do these directly in View / ViewController:
 
-- 发网络请求
-- 读写数据库
-- 写复杂业务判断
-- 散落式访问 UserDefaults
+- network calls
+- database reads/writes
+- complex business decision logic
+- scattered `UserDefaults` access
 
-### ViewModel 层职责
+### ViewModel Responsibilities
 
-适合放在 ViewModel 的内容：
+Good fit for ViewModel:
 
-- 加载状态管理
-- 视图可消费的数据转换
-- 用户操作触发的流程编排
-- 调用 service / repository
+- loading-state management
+- presentation data mapping
+- orchestration triggered by user actions
+- calling service/repository
 
-不适合放在 ViewModel 的内容：
+Not a good fit for ViewModel:
 
-- 原始网络细节
-- 底层存储读写细节
-- 与 UI 完全无关的业务核心逻辑
+- raw networking details
+- low-level persistence read/write details
+- core business logic unrelated to UI presentation
 
-### Service / UseCase 层职责
+### Service / UseCase Responsibilities
 
-适合放：
+Good fit:
 
-- 业务规则
-- 组合多个数据源
-- 权限判断
-- 可复用流程逻辑
+- business rules
+- orchestration across multiple data sources
+- permission/authorization decisions
+- reusable workflow logic
 
-### Repository / Store 层职责
+### Repository / Store Responsibilities
 
-适合放：
+Good fit:
 
-- API + Cache + DB 的统一访问
-- 单一数据域的读写封装
-- 领域数据查询
+- unified API + cache + DB access
+- read/write encapsulation for a single data domain
+- domain-oriented data queries
 
-## 不要为了形式主义增加层数
+## Do Not Add Layers for Ceremony
 
-以下场景不必硬拆 Repository：
+You usually do not need a separate Repository when:
 
-- 简单页面只调用一个明确的 APIClient 接口
-- 该逻辑没有复用价值
-- 引入中间层只会增加跳转成本
+- a simple screen calls one clear APIClient endpoint
+- the logic has no reuse value
+- an extra layer only adds indirection cost
 
-## 决策模板
+## Decision Template
 
-新增一层前，先回答：
+Before adding a new layer, answer:
 
-1. 这层解决了什么真实问题？
-2. 没有它会具体痛在哪里？
-3. 它会被复用吗？
-4. 它会让测试更简单还是更绕？
+1. What real problem does this layer solve?
+2. What specific pain exists without it?
+3. Will it actually be reused?
+4. Does it simplify testing or make it more complex?

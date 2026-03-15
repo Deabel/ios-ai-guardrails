@@ -1,48 +1,48 @@
 # Testing and Debugging
 
-## 测试
+## Testing
 
-### 默认要求
+### Default Requirement
 
-非平凡新逻辑应补测试，或者说明为什么暂不补。
+Non-trivial new logic should include tests, or clearly explain why tests are omitted.
 
-### 测试重点
+### Test Focus
 
-至少覆盖：
+At minimum, cover:
 
 - happy path
 - failure path
 - edge case
 
-### 推荐
+### Recommended
 
-- Swift Testing 或 XCTest，遵循项目现状
-- 可注入依赖
-- 稳定、可重复、低耦合
+- Swift Testing or XCTest, aligned with project conventions
+- dependency injection
+- stable, repeatable, low-coupling tests
 
-### 避免
+### Avoid
 
-- 对实现细节过度断言
-- 睡眠等待式异步测试
-- 随机性测试
+- over-asserting implementation details
+- sleep-based async tests
+- randomized/flaky tests
 
-## 调试
+## Debugging
 
-排查问题时优先输出：
+When debugging, prioritize:
 
-1. 复现路径
-2. 可能根因
-3. 最小修复方案
-4. 回归风险点
-5. 建议测试点
+1. Reproduction path
+2. Likely root causes
+3. Smallest viable fix
+4. Regression risks
+5. Suggested test points
 
-## 日志
+## Logging
 
-日志应包含上下文：
+Logs should include context:
 
-- 输入条件
-- 关键状态
-- 错误信息
-- 资源标识
+- input conditions
+- key state
+- error details
+- resource identifiers
 
-避免满屏 `print("here")` 式原始巫术。
+Avoid noisy `print("here")`-style debugging spam.

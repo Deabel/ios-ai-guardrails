@@ -1,63 +1,63 @@
 # Quality Gates
 
-让 AI 生成代码从“可运行”走向“可落地”。
+Move AI-generated code from "it runs" to "it can safely ship."
 
-## 交付最小门禁
+## Minimum Delivery Gates
 
-非 trivial 修改至少满足：
+Any non-trivial change should satisfy at least:
 
-- 编译可信性检查（接口、类型、可见性）
-- 并发隔离检查（`@MainActor`、actor 边界、共享状态）
-- 错误处理检查（无静默吞错、无裸 `try?`）
-- 架构边界检查（View 不含业务/网络/存储）
+- compile plausibility checks (interfaces, types, visibility)
+- concurrency isolation checks (`@MainActor`, actor boundaries, shared state)
+- error-handling checks (no silent swallow, no bare `try?` for meaningful operations)
+- architecture boundary checks (no business/network/persistence logic in Views)
 
-## 风险等级
+## Risk Levels
 
 ### Low
 
-特征：
+Characteristics:
 
-- 小范围重构
-- 文案/样式/局部逻辑调整
-- 无 API 合约变更
+- small refactors
+- copy/style/local logic adjustments
+- no public API contract changes
 
-要求：
+Requirements:
 
-- 说明影响面
-- 提供至少一个验证点
+- state impact scope
+- provide at least one verification point
 
 ### Medium
 
-特征：
+Characteristics:
 
-- ViewModel/Service 行为变化
-- 公共方法签名变化
-- 关键错误处理路径变化
+- behavior changes in ViewModel/Service
+- public method signature changes
+- changes in critical error paths
 
-要求：
+Requirements:
 
-- 增加或更新测试
-- 给出调用方迁移说明
+- add or update tests
+- provide call-site migration notes
 
 ### High
 
-特征：
+Characteristics:
 
-- 持久化结构变化
-- 鉴权/支付/风控流程变化
-- 跨模块契约变化
+- persistence/schema changes
+- authentication/payment/risk-control flow changes
+- cross-module contract changes
 
-要求：
+Requirements:
 
-- 回滚策略
-- 上线监控建议
-- 兼容性说明
+- rollback strategy
+- rollout monitoring suggestions
+- compatibility notes
 
-## AI 输出验收模板
+## AI Output Acceptance Template
 
-建议在结果中固定包含：
+Recommended fixed sections:
 
-1. `Change Scope`：改了什么，没改什么
-2. `Verification`：跑了什么，没跑什么
-3. `Risk`：编译/并发/迁移/回归风险
-4. `Follow-up`：后续必做项（如果有）
+1. `Change Scope`: what changed and what did not
+2. `Verification`: what was run and what was not run
+3. `Risk`: compile/concurrency/migration/regression risks
+4. `Follow-up`: mandatory next actions (if any)

@@ -1,33 +1,33 @@
 # Spec Governance
 
-规范仓库不是一次性交付物，而是持续演进的工程资产。
+This spec repository is not a one-time artifact; it is an evolving engineering asset.
 
-## 版本策略
+## Versioning Strategy
 
-- 使用语义化版本：`MAJOR.MINOR.PATCH`
-- `PATCH`：措辞修正、示例补充、无行为变化
-- `MINOR`：新增可选规则、增强默认建议
-- `MAJOR`：默认行为变化或不兼容调整
+- Use semantic versioning: `MAJOR.MINOR.PATCH`.
+- `PATCH`: wording fixes, example updates, no behavior change.
+- `MINOR`: additive optional rules and stronger defaults.
+- `MAJOR`: default behavior changes or incompatible updates.
 
-## 变更提案最小内容
+## Minimum Change Proposal Content
 
-每次规则更新建议在 PR 中包含：
+Each rule update PR should include:
 
-- 背景问题（为什么改）
-- 新规则（改了什么）
-- 影响范围（哪些 prompt/tool/team 会受影响）
-- 迁移建议（调用方式、模板、示例是否需要更新）
+- background problem (why this change)
+- new rule content (what changed)
+- affected scope (which prompts/tools/teams are impacted)
+- migration guidance (whether calling patterns/templates/examples must change)
 
-## 兼容性原则
+## Compatibility Principles
 
-- 优先增量兼容，不轻易推翻已有用法。
-- 破坏性变更需提供过渡窗口和升级说明。
-- `AGENTS.md`、`PROMPTS/`、`templates/` 的指令语义应保持一致。
+- Prefer additive compatibility; avoid overturning working conventions.
+- Breaking changes require a transition window and upgrade notes.
+- Keep instruction semantics consistent across `AGENTS.md`, `PROMPTS/`, and `templates/`.
 
-## 质量维护
+## Quality Maintenance
 
-- 每次升级后，至少抽样验证 3 类任务：
-  - 新功能生成
-  - 代码审查
-  - 缺陷修复
-- 若发现高频误用，优先更新示例和模板，再增加约束条款。
+- After each upgrade, sample-validate at least three task types:
+  - new feature generation
+  - code review
+  - bug fixing
+- If frequent misuse appears, update examples/templates first, then add stricter rules if needed.

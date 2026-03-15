@@ -1,43 +1,43 @@
 # Review Checklist
 
-在提交 AI 生成代码前，检查以下问题。
+Before submitting AI-generated code, check the items below.
 
-## 架构
+## Architecture
 
-- 是否遵循当前工程现有模式？
-- UI 层是否保持足够轻？
-- 是否引入了无意义的新层？
+- Does it follow existing project patterns?
+- Is the UI layer still thin enough?
+- Did it introduce unnecessary layers?
 
-## Swift 风格
+## Swift Style
 
-- 命名是否清晰？
-- 是否存在过深嵌套？
-- 是否有强制解包风险？
+- Are names clear?
+- Is nesting depth reasonable?
+- Is there force-unwrap risk?
 
-## 并发
+## Concurrency
 
-- 是否有主线程阻塞？
-- 是否有共享可变状态竞态？
-- 是否滥用了 `Task.detached`？
+- Is there main-thread blocking?
+- Are there data races on shared mutable state?
+- Is `Task.detached` overused?
 
-## 数据与错误
+## Data and Error Handling
 
-- 错误是否被显式处理？
-- 是否存在静默失败？
-- 网络 / 存储逻辑是否放在正确层级？
+- Are errors handled explicitly?
+- Are there silent failures?
+- Are networking/persistence concerns in the correct layer?
 
 ## UI
 
-- 是否考虑 loading / empty / error？
-- 是否存在明显 accessibility 或 localization 风险？
+- Does it cover loading/empty/error states?
+- Are there obvious accessibility or localization risks?
 
-## 测试
+## Testing
 
-- 需要补测试吗？
-- 是否说明了回归点？
+- Are additional tests needed?
+- Are regression points documented?
 
-## 交付
+## Delivery
 
-- 是否有 debug residue？
-- 是否会影响调用方？
-- 是否需要迁移说明？
+- Is debug residue removed?
+- Does it impact callers?
+- Are migration notes needed?

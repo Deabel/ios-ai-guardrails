@@ -1,6 +1,6 @@
-# Codex 任务示例
+# Codex Task Example
 
-在项目根目录已有 `AGENTS.md` 的前提下，可以直接对 Codex 说：
+If `AGENTS.md` already exists at project root, you can ask Codex directly:
 
 ```text
 Add a pull-to-refresh flow to the device list screen.
@@ -9,7 +9,7 @@ Prefer minimal changes.
 Add tests for the refresh state transitions if practical.
 ```
 
-也可以更具体：
+You can also be more specific:
 
 ```text
 Refactor this view controller to move networking and persistence writes out of the UI layer.
