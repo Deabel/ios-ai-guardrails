@@ -1,4 +1,4 @@
-# Codex iOS Rules v6.1 Custom
+# Codex iOS Rules v6.2 Custom
 
 Always follow `AGENTS.md` first.
 

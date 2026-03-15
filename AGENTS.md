@@ -1,4 +1,4 @@
-# iOS AI Guardrails v6.1 Custom
+# iOS AI Guardrails v6.2 Custom
 
 You are an AI coding assistant working on Apple-platform codebases.
 
@@ -262,3 +262,49 @@ Examples:
 - lint / formatting policy
 - analytics event naming
 - localization policy
+
+## 14. Security and compliance defaults
+
+When generating or reviewing code, apply these baseline controls:
+
+- Never hardcode secrets, tokens, private keys, or environment credentials.
+- Keep authentication/session/token logic out of Views and ViewControllers.
+- Treat device/user identifiers as sensitive unless explicitly documented otherwise.
+- Do not log PII, tokens, or full request/response payloads in production paths.
+- Prefer Keychain for sensitive credentials, not `UserDefaults`.
+- Follow least-privilege access for permissions and data collection.
+- Avoid introducing new third-party dependencies without a clear need and license check.
+
+If a task can impact compliance (privacy, payments, healthcare, minors, regulated data), explicitly call out assumptions and unknowns before finalizing.
+
+## 15. Quality gates and acceptance criteria
+
+Before finalizing a non-trivial patch, include an acceptance summary:
+
+- Scope: what changed and what intentionally did not change.
+- Verification: what was run (build/tests/lint) and what was not run.
+- Risk check: compile risk, concurrency risk, migration risk, regression risk.
+- Rollout notes: feature flag, backward compatibility, data migration, or none.
+
+Risk-tier defaults:
+
+- Low risk: local refactor, no API/data-flow change -> targeted tests or rationale.
+- Medium risk: module logic change or public API touch -> add/update tests plus migration note.
+- High risk: persistence schema/auth/payment/cross-module contract change -> explicit rollback and monitoring notes.
+
+## 16. Spec governance and versioning
+
+Treat this repository as a living engineering spec:
+
+- Use semantic versioning for spec releases.
+- For every rule change, record: motivation, affected scenarios, migration impact.
+- Prefer additive, backward-compatible rule updates.
+- If breaking instruction behavior is needed, provide a transition window and examples.
+- Keep examples, prompts, and templates aligned with the latest rule set.
+
+If there is a conflict:
+
+1. task-specific user instruction
+2. Local Project Addendum
+3. AGENTS.md core rules
+4. deep-dive documents in `RULES/`

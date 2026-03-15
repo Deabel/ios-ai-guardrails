@@ -1,4 +1,4 @@
-# iOS AI Guardrails v6.1 Custom
+# iOS AI Guardrails v6.2 Custom
 
 A customized, cross-tool guardrails repository for Apple-platform development.
 
@@ -57,7 +57,15 @@ Use `CLAUDE.md` as the project instruction entry, or copy its contents into the 
 - `examples/`: concrete usage examples
 - `scripts/`: installation helpers
 
-## What changed in v6.1 custom
+New in this repo hardening layer:
+
+- `RULES/10-security-compliance.md`: security and compliance baseline
+- `RULES/11-quality-gates.md`: risk-tiered delivery gates
+- `RULES/12-spec-governance.md`: versioning and rule governance
+- `PROMPTS/audit-guardrails.md`: periodic spec audit prompt
+- `templates/ai-change-review-checklist.md`: PR/review execution checklist
+
+## What changed in v6.2 custom
 
 This custom edition strengthens:
 
@@ -78,3 +86,11 @@ This custom edition strengthens:
 3. Keep rules short and enforceable.
 4. Put long explanations in `RULES/`.
 5. Reuse the prompt templates from `PROMPTS/` instead of rewriting the same ask every time.
+
+## Industry-style adoption workflow
+
+1. `Baseline`: enforce `AGENTS.md` as the top-level source of truth.
+2. `Execution`: use `PROMPTS/` + `templates/` to standardize AI task inputs/outputs.
+3. `Governance`: version rule changes and require migration notes for breaking behavior.
+4. `Quality`: apply risk-tier gates before landing non-trivial patches.
+5. `Audit`: run periodic spec audits using `PROMPTS/audit-guardrails.md`.

@@ -1,4 +1,4 @@
-# Claude iOS Rules v6.1 Custom
+# Claude iOS Rules v6.2 Custom
 
 Follow `AGENTS.md` as the source of truth.
 
