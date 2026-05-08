@@ -12,6 +12,7 @@ FAILURES=0
 CODEX_TARGET="${CODEX_TARGET:-$HOME/.codex/AGENTS.md}"
 CLAUDE_TARGET="${CLAUDE_TARGET:-$HOME/.claude/CLAUDE.md}"
 STRICT_SYNC="${STRICT_SYNC:-0}"
+CLAUDE_SOURCE="${CLAUDE_SOURCE:-$REPO_ROOT/AGENTS.md}"
 
 usage() {
   cat <<'EOF'
@@ -23,11 +24,13 @@ Options:
   --no-claude               Skip Claude sync.
   --codex-target <path>     Override Codex target file path.
   --claude-target <path>    Override Claude target file path.
+  --claude-source <path>    Override Claude source file path.
   -h, --help                Show this help.
 
 Environment variables:
   CODEX_TARGET              Same as --codex-target.
   CLAUDE_TARGET             Same as --claude-target.
+  CLAUDE_SOURCE             Same as --claude-source.
 EOF
 }
 
@@ -51,6 +54,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --claude-target)
       CLAUDE_TARGET="${2:-}"
+      shift 2
+      ;;
+    --claude-source)
+      CLAUDE_SOURCE="${2:-}"
       shift 2
       ;;
     -h|--help)
@@ -99,7 +106,7 @@ if [[ "$SYNC_CODEX" -eq 1 ]]; then
 fi
 
 if [[ "$SYNC_CLAUDE" -eq 1 ]]; then
-  copy_file "$REPO_ROOT/CLAUDE.md" "$CLAUDE_TARGET" "claude"
+  copy_file "$CLAUDE_SOURCE" "$CLAUDE_TARGET" "claude"
 fi
 
 echo "Sync finished."
