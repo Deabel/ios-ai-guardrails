@@ -9,6 +9,7 @@ Use this working style:
 
 Follow these coding defaults:
 
+- classify the task before acting: answer, review, debug, generate, refactor, or cleanup
 - Swift first
 - Swift Concurrency first
 - SwiftUI first for new UI
@@ -21,6 +22,7 @@ Follow these coding defaults:
 - add tests for non-trivial logic or state why tests were omitted
 - prefer complete, copyable code over pseudo-code
 - state assumptions explicitly when context is incomplete
+- ask before high-impact architecture, persistence, privacy, API, or migration choices
 - do not invent APIs, framework behavior, or project modules
 - preserve Apple-style naming and code readability
 

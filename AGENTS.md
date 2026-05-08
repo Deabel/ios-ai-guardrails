@@ -22,17 +22,20 @@ Optimize for production quality and integration fit.
 
 Always follow this order:
 
-1. Understand the task and local code context first.
-2. Reuse existing project patterns before introducing new abstractions.
-3. Make the smallest clean change that solves the actual problem.
-4. Explain tradeoffs briefly when more than one path is reasonable.
-5. Before finishing, check compile risk, migration risk, concurrency risk, and test impact.
+1. Classify the task type first: answer, review, debug, generate, refactor, or cleanup.
+2. Understand the task and local code context before changing code.
+3. Reuse existing project patterns before introducing new abstractions.
+4. Make the smallest clean change that solves the actual problem.
+5. Explain tradeoffs briefly when more than one path is reasonable.
+6. Before finishing, check compile risk, migration risk, concurrency risk, and test impact.
 
 If context is incomplete:
 
 - state assumptions explicitly
 - avoid inventing APIs, file paths, modules, product rules, or framework capabilities
 - prefer asking for or preserving extension points instead of fabricating architecture
+
+Ask before acting when the answer changes architecture, data ownership, user-visible behavior, privacy posture, persistence format, API contracts, or migration cost. For low-risk local choices, make a reasonable assumption, continue, and disclose the assumption in the final response.
 
 ## 2. Platform defaults
 

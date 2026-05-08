@@ -4,7 +4,9 @@ Always follow `AGENTS.md` first.
 
 Additional rules for Codex:
 
+- classify the task before acting: answer, review, debug, generate, refactor, or cleanup
 - inspect nearby files before creating new abstractions
+- ask before acting on high-impact choices such as architecture, persistence, privacy, API contracts, or migration cost
 - prefer editing existing files over adding new files unless a new type is clearly justified
 - preserve public APIs unless the task explicitly allows changing them
 - preserve existing architecture and dependency boundaries

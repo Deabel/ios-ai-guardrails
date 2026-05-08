@@ -36,6 +36,7 @@
 - `RULES/10-security-compliance.md`：安全与合规基线（密钥、PII、权限、依赖）。
 - `RULES/11-quality-gates.md`：质量门禁与风险分级（Low/Medium/High）。
 - `RULES/12-spec-governance.md`：规范治理机制（语义化版本、变更提案、兼容策略）。
+- `RULES/13-agent-behavior.md`：AI agent 行为协议，定义任务分类、动手前上下文检查、何时询问、范围控制、执行反馈与最终验收输出。
 
 ## 目录：`PROMPTS/`
 
@@ -88,4 +89,3 @@
 - `scripts/install-codex-global.sh`：把 `AGENTS.md` 安装到 `~/.codex/AGENTS.md`。
 - `scripts/install-project-agents.sh`：把 `AGENTS.md` 安装到指定项目目录。
 - `scripts/print-chatgpt-snippet.sh`：打印 `CHATGPT.md`，便于复制到 ChatGPT 配置。
-

@@ -63,6 +63,7 @@ New in this repo hardening layer:
 - `RULES/10-security-compliance.md`: security and compliance baseline
 - `RULES/11-quality-gates.md`: risk-tiered delivery gates
 - `RULES/12-spec-governance.md`: versioning and rule governance
+- `RULES/13-agent-behavior.md`: action protocol for analysis, questions, scope control, updates, and verification
 - `PROMPTS/audit-guardrails.md`: periodic spec audit prompt
 - `templates/ai-change-review-checklist.md`: PR/review execution checklist
 
@@ -79,6 +80,7 @@ This custom edition strengthens:
 - Chinese team-comment guidance
 - copyable response format expectations for AI tools
 - review checklist items for crash risk, thread-safety, migration risk, and test impact
+- explicit agent behavior rules for task classification, context inspection, escalation, and final acceptance summaries
 
 ## Suggested operating pattern
 
