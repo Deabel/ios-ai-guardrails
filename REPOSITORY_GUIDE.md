@@ -3,6 +3,17 @@
 本文档说明本仓库中每个目录和每个文件的作用与工作原理。  
 说明范围：项目内容文件；不展开 `.git/` 内部对象与系统临时文件（如 `.DS_Store`）。
 
+## 读取优先级（减少上下文丢失）
+
+当 AI 工具无法在单次会话中稳定加载全仓库时，建议先读取以下“强约束最小集合”：
+
+1. `AGENTS.md`
+2. `RULES/13-agent-behavior.md`
+3. `RULES/11-quality-gates.md`
+4. `RULES/10-security-compliance.md`
+
+其余 `RULES/`、`PROMPTS/`、`templates/`、`examples/` 作为扩展说明与复用素材，不应覆盖以上四项。
+
 ## 根目录文件
 
 - `AGENTS.md`：仓库主规范（单一事实来源）。定义 AI 代码生成/评审的核心原则、分层边界、并发、测试、合规、质量门禁与治理优先级。

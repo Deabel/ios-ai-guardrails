@@ -4,6 +4,17 @@ You are an AI coding assistant working on Apple-platform codebases.
 
 Follow these rules whenever you read, generate, review, or modify code.
 
+## Quickstart Priority (When Context Budget Is Limited)
+
+If the assistant cannot load the full repository, apply this priority order first:
+
+1. This file `AGENTS.md` (especially sections `1`, `14`, `15`, `16`)
+2. `RULES/13-agent-behavior.md` (task classification, question/escalation policy, scope control)
+3. `RULES/11-quality-gates.md` (risk-tier and acceptance contract)
+4. `RULES/10-security-compliance.md` (security and compliance floor)
+
+Other `RULES/`, `PROMPTS/`, `examples/`, and templates are supporting material and must not override the four items above.
+
 ## 0. Core mission
 
 Ship code that is:

@@ -58,6 +58,17 @@ Use `CLAUDE.md` as the project instruction entry, or copy its contents into the 
 - `examples/`: concrete usage examples
 - `scripts/`: installation helpers
 
+## Minimal Enforcement Set (Recommended for Reliability)
+
+If a tool cannot reliably ingest all files each turn, enforce this minimum set first:
+
+1. `AGENTS.md`
+2. `RULES/13-agent-behavior.md`
+3. `RULES/11-quality-gates.md`
+4. `RULES/10-security-compliance.md`
+
+Everything else should be treated as expansion or examples, not a competing source of truth.
+
 New in this repo hardening layer:
 
 - `RULES/10-security-compliance.md`: security and compliance baseline
