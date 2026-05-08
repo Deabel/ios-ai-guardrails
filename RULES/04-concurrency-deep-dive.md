@@ -21,7 +21,7 @@ Avoid:
 
 - `Task.detached` for routine feature work
 - hopping between GCD and Swift concurrency without reason
-- sleeping to “wait” for async completion in tests
+- sleeping to "wait" for async completion in tests
 - holding mutable shared arrays or dictionaries across tasks without ownership rules
 
 ## Review heuristics

@@ -34,7 +34,7 @@ Extract subviews when it improves:
 - readability
 - testing or preview value
 
-Do not split mechanically just because `body` looks long.
+Do not split views mechanically based only on `body` length.
 
 ## UIKit
 

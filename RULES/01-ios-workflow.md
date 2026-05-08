@@ -2,7 +2,7 @@
 
 ## Default development posture
 
-Optimize for incremental landing, not heroic rewrites.
+Prefer incremental delivery over broad rewrites.
 
 Prefer this order:
 
@@ -17,7 +17,7 @@ Prefer this order:
 
 If the project already uses UIKit, Combine, managers, repositories, or a specific API client, fit into that world first.
 
-Do not create a shiny new subsystem because the internet whispered “clean architecture” in your ear.
+Do not introduce a new subsystem unless the current codebase and task clearly require it.
 
 ## When to refactor
 

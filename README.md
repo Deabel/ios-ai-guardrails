@@ -50,12 +50,18 @@ bash scripts/install-post-commit-sync-hook.sh
 Default sync targets:
 
 - Codex: `~/.codex/AGENTS.md` (from repo `AGENTS.md`)
-- Claude Code: `~/.claude/CLAUDE.md` (from repo `CLAUDE.md`)
+- Claude Code: `~/.claude/CLAUDE.md` (default source is repo `AGENTS.md` for full-rule fidelity)
 
 You can override target paths:
 
 ```bash
 CODEX_TARGET=/custom/AGENTS.md CLAUDE_TARGET=/custom/CLAUDE.md git commit -m "..."
+```
+
+You can override Claude sync source (for example, to use compact entry file):
+
+```bash
+CLAUDE_SOURCE=/path/to/repo/CLAUDE.md git commit -m "..."
 ```
 
 By default, sync is best-effort (warnings only). To fail on sync errors:
@@ -119,7 +125,7 @@ This custom edition strengthens:
 ## Suggested operating pattern
 
 1. Put `AGENTS.md` in the project root.
-2. Add project-specific constraints below the “Local Project Addendum” section.
+2. Add project-specific constraints below the "Local Project Addendum" section.
 3. Keep rules short and enforceable.
 4. Put long explanations in `RULES/`.
 5. Reuse the prompt templates from `PROMPTS/` instead of rewriting the same ask every time.

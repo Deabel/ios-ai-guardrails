@@ -155,8 +155,8 @@ Avoid:
 - mixing GCD and Swift concurrency without a concrete reason
 - blocking the main thread
 - shared mutable state without an ownership model
-- assuming `async` means “background thread”
-- assuming actor access means “child thread”
+- assuming `async` means "background thread"
+- assuming actor access means "child thread"
 
 Reason in terms of isolation, executors, and ownership.
 
