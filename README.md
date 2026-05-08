@@ -52,6 +52,14 @@ Default sync targets:
 - Codex: `~/.codex/AGENTS.md` (from repo `AGENTS.md`)
 - Claude Code: `~/.claude/CLAUDE.md` (default source is repo `AGENTS.md` for full-rule fidelity)
 
+Default sync mode:
+
+- Runtime bundle mode is enabled by default.
+- The synced file contains:
+  - base rules source (`AGENTS.md` by default)
+  - inlined `RULES/*.md` content
+  - absolute repository paths for direct file resolution
+
 You can override target paths:
 
 ```bash
@@ -62,6 +70,12 @@ You can override Claude sync source (for example, to use compact entry file):
 
 ```bash
 CLAUDE_SOURCE=/path/to/repo/CLAUDE.md git commit -m "..."
+```
+
+You can disable bundling and copy source files directly:
+
+```bash
+bash scripts/sync-agent-configs.sh --no-runtime-bundle
 ```
 
 By default, sync is best-effort (warnings only). To fail on sync errors:
