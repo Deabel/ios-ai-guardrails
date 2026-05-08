@@ -41,6 +41,29 @@ You can install the global variant with:
 bash scripts/install-codex-global.sh
 ```
 
+Auto-sync on commit (Codex + Claude targets):
+
+```bash
+bash scripts/install-post-commit-sync-hook.sh
+```
+
+Default sync targets:
+
+- Codex: `~/.codex/AGENTS.md` (from repo `AGENTS.md`)
+- Claude Code: `~/.claude/CLAUDE.md` (from repo `CLAUDE.md`)
+
+You can override target paths:
+
+```bash
+CODEX_TARGET=/custom/AGENTS.md CLAUDE_TARGET=/custom/CLAUDE.md git commit -m "..."
+```
+
+By default, sync is best-effort (warnings only). To fail on sync errors:
+
+```bash
+STRICT_SYNC=1 bash scripts/sync-agent-configs.sh
+```
+
 ### Claude
 
 Use `CLAUDE.md` as the project instruction entry, or copy its contents into the tool's project instructions.

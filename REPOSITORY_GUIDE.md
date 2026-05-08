@@ -100,3 +100,5 @@
 - `scripts/install-codex-global.sh`：把 `AGENTS.md` 安装到 `~/.codex/AGENTS.md`。
 - `scripts/install-project-agents.sh`：把 `AGENTS.md` 安装到指定项目目录。
 - `scripts/print-chatgpt-snippet.sh`：打印 `CHATGPT.md`，便于复制到 ChatGPT 配置。
+- `scripts/sync-agent-configs.sh`：同步仓库规范到 Codex/Claude 目标配置文件，支持 dry-run 与自定义目标路径。
+- `scripts/install-post-commit-sync-hook.sh`：安装 Git `post-commit` 钩子，提交成功后自动触发规范同步。
