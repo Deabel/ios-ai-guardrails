@@ -1,46 +1,46 @@
 # Security & Compliance
 
-Security and compliance baseline for AI-generated code.
-
-## Goals
-
-- secure by default
-- least privilege
-- auditable changes
-
 ## Sensitive Data Handling
 
 - Never hardcode secrets, tokens, private keys, or production credentials in code.
 - Never log PII, tokens, or full request/response payloads.
-- Treat user IDs, device IDs, location, and payment data as sensitive unless explicitly exempted by project policy.
-- Example placeholders must be explicit (for example, `YOUR_API_KEY`) and must not resemble real credentials.
+- Treat user IDs, device IDs, location, and payment data as sensitive unless explicitly exempted.
+- Use explicit placeholders (`YOUR_API_KEY`), never values resembling real credentials.
 
-## iOS Storage and Permissions
+## iOS Storage
 
-- Store sensitive credentials in Keychain, not `UserDefaults`.
-- Use `UserDefaults` only for low-sensitivity config (UI preferences, toggles, etc.).
-- When adding system permissions (camera, microphone, location, contacts, etc.), document business purpose and minimum scope.
-- Permission prompts should be user-intent-driven, not shown at cold start without context.
+**Keychain** for: auth tokens, passwords, private keys, biometric flags, payment instrument IDs.
 
-## Networking and Third-Party Dependencies
+**UserDefaults** for: UI preferences, last-viewed tab, non-sensitive feature toggles, pagination state.
 
-- Reuse the existing networking layer; do not add parallel network stacks.
+**Keychain usage pattern:**
+- Encapsulate in a dedicated `KeychainStore` actor; never inline raw `SecItemAdd` calls in feature code.
+- Keychain calls are synchronous and blocking — call from a background actor, not on MainActor.
+- Never log Keychain values, even in debug builds.
+
+## Permissions
+
+- Document business purpose and minimum scope when adding system permissions (camera, microphone, location, contacts, etc.).
+- Permission prompts must be user-intent-driven, not shown at cold start without context.
+
+## Networking and Dependencies
+
+- Reuse the existing networking layer; do not add a parallel network stack.
 - Keep transport errors, decoding errors, and business errors clearly separated.
-- Validate license compatibility and maintenance status before adding third-party dependencies.
-- Avoid heavy dependencies for small problems; prefer minimal local implementations.
+- Validate license compatibility before adding third-party dependencies; prefer minimal local implementations for small problems.
 
-## Compliance Notes in AI Tasks
+## Privacy Boundary Classification
 
-When tasks involve the scenarios below, explicitly state assumptions and risks:
+Classify each data flow before finalizing implementation:
 
-- privacy data collection/upload
-- payments, authentication, or account systems
-- regulated domains (minors, healthcare, finance, etc.)
-- cross-border data transfer
+- **Tier 0 (on-device only):** data never leaves the device. Standard care applies.
+- **Tier 1 (device → first-party server):** apply consent flags (GDPR/CCPA where required), no PII in logs, data minimization. Note in output.
+- **Tier 2 (device → third-party or regulated domain):** do not finalize implementation; explicitly list unknown compliance requirements and block for team confirmation.
 
-Recommended output structure:
+**Tier 2 triggers:**
+- `HKHealthStore` or biometric data uploaded to a server → healthcare-adjacent
+- Any flow involving users under 13 → COPPA
+- Payment tokens, card numbers, or transaction IDs → PCI
+- Biometric data used for server-side authentication
 
-1. Known constraints
-2. Assumptions
-3. Risks
-4. Mitigations
+**Compliance output structure (when triggered):** Known constraints → Assumptions → Risks → Mitigations.

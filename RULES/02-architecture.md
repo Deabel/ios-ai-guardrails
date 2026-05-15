@@ -61,11 +61,19 @@ You usually do not need a separate Repository when:
 - the logic has no reuse value
 - an extra layer only adds indirection cost
 
-## Decision Template
+## Navigation and Coordination
 
-Before adding a new layer, answer:
+**UIKit — Coordinator pattern**
+- If the project already uses a Coordinator, add new flows through its existing interface; do not push directly from ViewController.
+- If no Coordinator exists, isolate navigation calls in a dedicated `navigateTo...()` method in ViewController; do not introduce Coordinator unless the task explicitly requests it.
 
+**SwiftUI — NavigationStack**
+- Prefer `NavigationStack` with value-based navigation paths.
+- Keep destination resolution logic in a ViewModel or dedicated router type, not inside `View.body`.
+
+## Layer Decision Template
+
+Before adding a new layer:
 1. What real problem does this layer solve?
-2. What specific pain exists without it?
-3. Will it actually be reused?
-4. Does it simplify testing or make it more complex?
+2. Will it actually be reused?
+3. Does it simplify testing, or add indirection cost?

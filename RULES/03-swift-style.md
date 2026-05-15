@@ -64,3 +64,5 @@ Comments should explain:
 - constraints or pitfalls
 
 Do not comment obvious code.
+
+See also: [03b-apple-api-design.md](03b-apple-api-design.md) for naming, formatting, and documentation conventions aligned with Apple API Design Guidelines.

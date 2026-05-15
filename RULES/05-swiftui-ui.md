@@ -40,16 +40,16 @@ Do not split views mechanically based only on `body` length.
 
 ### Keep ViewControllers Thin
 
-Prefer separating:
+Separate: `setupUI()`, `setupConstraints()`, `bindViewModel()`, `setupActions()`. No networking, database, complex mapping, or business rules in controllers.
 
-- `setupUI()`
-- `setupConstraints()`
-- `bindViewModel()`
-- `setupActions()`
+### Custom UIView Extraction
 
-### Avoid Massive ViewControllers
+**Extract a custom UIView subclass when:**
+- the view is reused in 2+ places
+- layout + configuration logic exceeds ~20 lines
+- the view needs its own delegate or callback contract
 
-Networking, database operations, complex mapping, and business rules should not live directly in controllers.
+**Do not extract** for single-use simple views. Prefer a private helper method first: `private func makeHeaderView() -> UIView`.
 
 ## Common UI Requirements
 

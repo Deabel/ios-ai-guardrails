@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash scripts/sync-agent-configs.sh)",
+      "Bash(wc -l ~/.codex/AGENTS.md ~/.claude/CLAUDE.md && echo \"---\" && ls RULES/ | wc -l && echo \"RULES files\")"
+    ]
+  }
+}

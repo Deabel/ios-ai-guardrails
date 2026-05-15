@@ -11,12 +11,9 @@ This spec repository is not a one-time artifact; it is an evolving engineering a
 
 ## Minimum Change Proposal Content
 
-Each rule update PR should include:
+Each rule update commit/PR should include: background problem, changed content, affected scope, migration guidance.
 
-- background problem (why this change)
-- new rule content (what changed)
-- affected scope (which prompts/tools/teams are impacted)
-- migration guidance (whether calling patterns/templates/examples must change)
+Use `templates/rule-change-commit-template.md` for the required format and examples.
 
 ## Compatibility Principles
 

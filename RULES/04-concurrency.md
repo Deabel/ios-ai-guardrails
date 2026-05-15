@@ -1,61 +1,49 @@
 # Concurrency
 
-## Core Principle
+## Core Mental Models
 
-Prefer Swift structured concurrency.
+- `async` marks a suspension-capable function; it does not promise a background thread.
+- Actor isolation protects access rules; it does not promise a specific thread.
+- `@MainActor` isolates state and methods to the main actor for UI safety.
 
-### Preferred
+## Preferred APIs
 
-- `async/await`
-- `Task {}`
-- `withTaskGroup`
-- `withThrowingTaskGroup`
-- `actor`
-- `@MainActor`
+- `async/await`, `async throws` — async work that can fail
+- `Task {}` — lifecycle-scoped async work
+- `withTaskGroup` / `withThrowingTaskGroup` — bounded fan-out
+- `actor` — shared mutable state, caches, in-memory stores, coordination helpers
+- `@MainActor` — UI-facing state and observable ViewModel mutations
 
-### Use Carefully
+## Avoid
 
-- `Task.detached`
-- mixing GCD with Swift Concurrency
-- manual lock-based synchronization
-
-## Key Mental Models
-
-### `async` Does Not Mean "Runs on a Child Thread"
-
-`async` means suspension-capable asynchronous semantics, not fixed-thread execution.
-
-### `actor` Is Isolation, Not a Background Thread
-
-The key property of actors is isolation, not thread identity.
+- `Task.detached` for routine feature work
+- Mixing GCD and Swift Concurrency without a concrete reason
+- Sleeping to wait for async completion in tests
+- Holding mutable shared arrays or dictionaries across tasks without explicit ownership rules
 
 ## Shared State
 
-When mutable state is shared, prefer:
-
-- actor
-- explicit ownership
-- single-owner isolation model
-
-Avoid unconstrained concurrent reads/writes on the same mutable data.
-
-## UI Updates
-
-For UI or observable ViewModel state, prefer explicit `@MainActor` isolation.
+- Prefer actor, explicit ownership, or single-owner isolation model.
+- No unconstrained concurrent reads/writes on the same mutable data.
 
 ## Cancellation
 
-When designing async tasks, consider:
-
+Consider for every async task:
 - whether cancellation is needed
 - whether resources can leak after cancellation
-- whether stale tasks can write back to expired screens/objects
+- whether stale tasks can write back to expired screens or objects
 
-## Review Points
+## SwiftUI Concurrency Pitfalls
 
-In reviews, focus on:
+- `@EnvironmentObject` is a reference type; mutate its properties only on the MainActor. Never mutate from a non-isolated async context.
+- `.task {}` auto-cancels when the view disappears. Do not hold a duplicate strong Task reference in the ViewModel — this creates two competing tasks.
+- Mutable class instances captured in a `Task {}` closure are a data race unless the instance is actor-isolated or you capture a value-type copy.
 
-- main-thread blocking
-- race conditions
-- overuse of detached tasks
-- actor/isolation misuse
+## Review Checklist
+
+- Main-thread blocking
+- Who owns the mutable state
+- What must be `@MainActor`-isolated
+- Whether concurrent tasks can outlive the feature
+- Whether error propagation is preserved
+- Whether task cancellation and resource cleanup are handled

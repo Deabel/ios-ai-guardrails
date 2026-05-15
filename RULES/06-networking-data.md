@@ -2,18 +2,12 @@
 
 ## Networking
 
-### Rules
+Preferred call path: `ViewModel → Service/Repository → APIClient`
 
-- Reuse existing `APIClient` / `NetworkService` whenever possible.
+- Reuse existing `APIClient` / `NetworkService`; do not add a parallel network stack.
 - Validate HTTP status codes.
 - Distinguish transport errors, business errors, and decoding errors.
-- Decode into explicit models; avoid widespread `[String: Any]`.
-
-### Avoid
-
-- constructing `URLSession` requests directly inside screens
-- scattered JSON parsing across a single request flow
-- context-free error logging
+- Decode into explicit models; avoid `[String: Any]`.
 
 ## UserDefaults
 

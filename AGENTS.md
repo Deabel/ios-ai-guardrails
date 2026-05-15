@@ -2,323 +2,170 @@
 
 You are an AI coding assistant working on Apple-platform codebases.
 
-Follow these rules whenever you read, generate, review, or modify code.
+> **Context-limited?** Load `AGENTS-CORE.md` (~60 lines) as the minimum enforced rule set.
+> **Priority order when in conflict:** task-specific instruction → Local Project Addendum (§13) → this file → `RULES/`
 
-## Quickstart Priority (When Context Budget Is Limited)
+---
 
-If the assistant cannot load the full repository, apply this priority order first:
+## Quickstart Priority
 
-1. This file `AGENTS.md` (especially sections `1`, `14`, `15`, `16`)
-2. `RULES/13-agent-behavior.md` (task classification, question/escalation policy, scope control)
-3. `RULES/11-quality-gates.md` (risk-tier and acceptance contract)
-4. `RULES/10-security-compliance.md` (security and compliance floor)
+When context budget is limited, apply in this order:
 
-Other `RULES/`, `PROMPTS/`, `examples/`, and templates are supporting material and must not override the four items above.
+1. `AGENTS-CORE.md` (minimum enforcer — hard prohibitions, task protocol, Apple naming)
+2. §1 Working mode, §14 Security, §15 Quality gates (this file)
+3. `RULES/13-agent-behavior.md` (task classification, scope control)
+4. `RULES/11-quality-gates.md`, `RULES/10-security-compliance.md`
 
-## 0. Core mission
+---
 
-Ship code that is:
+## 0. Core Mission [CRITICAL]
 
-- correct
-- minimal
-- maintainable
-- testable
-- easy for a real iOS team to evolve
+Ship code that is correct, minimal, maintainable, testable, and easy for a real iOS team to evolve. Optimize for production quality and integration fit.
 
-Do not optimize for novelty.
-Do not optimize for academic purity.
-Optimize for production quality and integration fit.
+## 1. Working Mode [CRITICAL]
 
-## 1. Working mode
-
-Always follow this order:
-
-1. Classify the task type first: answer, review, debug, generate, refactor, or cleanup.
-2. Understand the task and local code context before changing code.
+1. Classify the task: Answer / Review / Debug / Generate / Refactor / Cleanup.
+2. Understand local code context before changing code.
 3. Reuse existing project patterns before introducing new abstractions.
 4. Make the smallest clean change that solves the actual problem.
 5. Explain tradeoffs briefly when more than one path is reasonable.
 6. Before finishing, check compile risk, migration risk, concurrency risk, and test impact.
 
-If context is incomplete:
+When context is incomplete: state assumptions explicitly; do not invent APIs, file paths, or framework capabilities.
 
-- state assumptions explicitly
-- avoid inventing APIs, file paths, modules, product rules, or framework capabilities
-- prefer asking for or preserving extension points instead of fabricating architecture
+Ask before acting when the answer changes architecture, data ownership, user-visible behavior, privacy posture, persistence format, API contracts, or migration cost. For low-risk local choices, assume and disclose.
 
-Ask before acting when the answer changes architecture, data ownership, user-visible behavior, privacy posture, persistence format, API contracts, or migration cost. For low-risk local choices, make a reasonable assumption, continue, and disclose the assumption in the final response.
+## 2. Platform Defaults [STANDARD]
 
-## 2. Platform defaults
+- Swift first, Swift Concurrency first, SwiftUI for new UI, UIKit for existing UIKit modules.
+- Combine only when stream composition is genuinely useful or already established.
+- `Codable` by default; add DTO/Domain/ViewData layering only when it provides concrete boundary value.
 
-Preferred technical direction:
+## 3. Architecture Defaults [CRITICAL]
 
-- Swift first
-- Swift Concurrency first
-- SwiftUI first for new UI
-- UIKit when the module is already UIKit-based or UIKit is the better fit
-- Combine only when stream composition is genuinely useful or already established in the project
+Default: MVVM.
 
-Avoid defaulting to:
-
-- Objective-C for new features unless the module already relies on it
-- callback-heavy APIs when async/await is available
-- speculative cross-module abstractions
-- Rx-style layering unless the project already uses it
-
-## 3. Architecture defaults
-
-Default application direction: MVVM.
-
-Use this as the default mental model:
-
-- View / ViewController: rendering, user interaction, view lifecycle wiring
-- ViewModel / Presenter: presentation state, user intent handling, view-facing orchestration
-- Service / UseCase: business rules and task orchestration
-- Repository / Store / Manager: persistence or backend-facing abstraction where needed
-- Client / SDK adapter: raw transport, SDK, database, or storage integration
+Layers: View/ViewController → ViewModel/Presenter → Service/UseCase → Repository/Store/Manager → Client/SDK adapter.
 
 Hard boundaries:
-
-- No networking inside View or ViewController.
-- No database logic inside View or ViewController.
+- No networking or database logic inside View or ViewController.
 - No scattered `UserDefaults` writes across UI event handlers.
 - No business rules hidden inside reusable UI components.
 - No new architecture layers without a concrete benefit.
 
+Navigation: For Coordinator pattern (UIKit) and `NavigationStack` (SwiftUI) guidance, see `RULES/02-architecture.md`.
+
 Prefer fitting into the current codebase over forcing a textbook architecture.
 
-## 4. Data placement rules
+## 4. Data Placement [STANDARD]
 
-Use these defaults unless the project already defines another pattern:
+| Concern | Default location |
+|---------|-----------------|
+| Network requests | Client / Repository / Service |
+| UserDefaults | Typed key wrapper or dedicated settings store |
+| Database access | Repository / Store / Manager |
+| DTO → domain mapping | Repository or mapper near the boundary |
+| Display formatting | ViewModel or dedicated formatter |
 
-- network requests -> client / repository / service
-- UserDefaults -> small typed key wrapper or dedicated settings store
-- database access -> repository / store / manager
-- mapping DTO to domain -> repository or mapper near the boundary
-- formatting for display -> ViewModel or dedicated formatter
-
-If a module is simple, do not create all layers just to satisfy a diagram.
 Right-sized architecture beats ceremonial architecture.
 
-## 5. Swift style rules
+## 5. Swift Style [STANDARD]
 
-Write idiomatic Swift.
+Prefer: value types, focused types, `guard` early returns, immutable state, explicit access control, `final` where inheritance is not intended.
 
-Prefer:
+Avoid: deep nesting, giant ViewModels, massive ViewControllers, force unwraps without documented invariants, `fatalError()` outside unrecoverable programmer errors.
 
-- value types when ownership is simple
-- focused types with one reason to change
-- `guard` with early return
-- immutable state by default
-- explicit access control for non-trivial code
-- `final` where inheritance is not intended
-- meaningful names over short names
+Naming: types → `PascalCase`; variables/methods/properties → `camelCase`; booleans → `isLoading`, `hasMore`, `canRetry`.
 
-Avoid:
+Comments: explain intent, invariants, edge cases, tradeoffs, and migration notes. Do not narrate obvious code. Chinese comments are allowed for team-facing generated code.
 
-- deep nesting
-- giant view models
-- massive view controllers
-- giant extensions with mixed responsibilities
-- force unwraps unless the invariant is guaranteed and documented
-- `fatalError()` outside unrecoverable programmer errors
-- clever generic tricks that reduce readability
+Follow Swift API Design Guidelines (clarity at call site over brevity). See `RULES/03b-apple-api-design.md` for naming, formatting, and DocC documentation conventions.
 
-Naming rules:
+## 6. Concurrency [STANDARD]
 
-- types -> `PascalCase`
-- variables, methods, properties -> `camelCase`
-- booleans should read like predicates: `isLoading`, `hasMore`, `canRetry`
+Prefer: `async/await`, `Task {}`, `withTaskGroup`, `actor`, `@MainActor` for UI-facing state.
 
-Comments:
+Avoid: `Task.detached` unless isolation escape is required; mixing GCD with Swift Concurrency; blocking the main thread; shared mutable state without an ownership model.
 
-- do not narrate obvious code
-- comment intent, invariants, edge cases, tradeoffs, and migration notes
-- Chinese comments are allowed for team-facing generated code when they improve maintainability
-- keep comments accurate when code changes
+`async` ≠ background thread. Actor isolation ≠ specific thread. See `RULES/04-concurrency.md` for SwiftUI-specific pitfalls.
 
-## 6. Concurrency rules
+## 7. UI [STANDARD]
 
-Prefer structured concurrency.
+SwiftUI: keep `body` declarative; no side effects in view declarations; choose state wrappers based on ownership (`@State`, `@Binding`, `@StateObject`, `@ObservedObject`, `@EnvironmentObject`); extract subviews when reuse, readability, or testability clearly improves.
 
-Use:
+UIKit: thin ViewController; separate `setupUI()`, `setupConstraints()`, `bindViewModel()`, `setupActions()`; no business logic in lifecycle methods.
 
-- `async/await`
-- `Task {}` for scoped work
-- `withTaskGroup` / `withThrowingTaskGroup` for bounded concurrent work
-- `actor` when protecting shared mutable state
-- `@MainActor` for UI-facing state and UI-triggered observable mutations
+All UI: consider loading / empty / error / success states; consider accessibility basics; no magic numbers.
 
-Avoid:
+## 8. Networking and Persistence [STANDARD]
 
-- `Task.detached` unless isolation escape is truly required and justified
-- mixing GCD and Swift concurrency without a concrete reason
-- blocking the main thread
-- shared mutable state without an ownership model
-- assuming `async` means "background thread"
-- assuming actor access means "child thread"
+Networking: reuse existing API client; validate status codes; decode into concrete models; separate transport vs decoding vs business errors.
 
-Reason in terms of isolation, executors, and ownership.
+Persistence: centralize `UserDefaults` behind typed keys or a store; use repositories/managers for database writes; no cache or persistence decisions in view code.
 
-## 7. UI rules
-
-For SwiftUI:
-
-- keep `body` declarative and readable
-- keep side effects out of view declarations
-- extract subviews only when readability, reuse, or testability clearly improves
-- choose state wrappers based on ownership and lifetime, not habit
-
-For UIKit:
-
-- keep ViewController thin
-- separate setup into clearly named methods
-- separate layout, binding, and actions
-- avoid business rules in lifecycle methods
-
-For all UI code:
-
-- consider loading / empty / error / success states
-- consider accessibility basics
-- avoid unexplained magic numbers
-- keep formatting and parsing concerns out of reusable view code
-
-## 8. Networking and persistence rules
-
-Networking:
-
-- reuse the project's existing API client whenever possible
-- validate status codes
-- decode into concrete DTO or domain models
-- surface transport vs decoding vs business errors clearly
-- avoid duplicating a second networking stack in the same feature
-
-Persistence:
-
-- centralize `UserDefaults` access behind typed keys or a dedicated store
-- use repositories / managers / stores for database writes
-- keep cache invalidation and persistence decisions out of view code
-
-## 9. Error handling rules
+## 9. Error Handling [STANDARD]
 
 Do not silently swallow important failures.
 
-Prefer:
+Prefer: `throws`, explicit domain errors, logging with context, user-facing fallback at the presentation boundary.
 
-- `throws`
-- explicit domain errors where useful
-- logging with enough context to debug
-- user-facing fallback handled at the presentation boundary
+Avoid: empty `catch`, `try?` on meaningful operations without a reason, converting all failures into `nil`.
 
-Avoid:
-
-- empty `catch`
-- `try?` on meaningful operations without a reason
-- converting all failures into `nil`
-- hiding errors in convenience APIs with no observability
-
-When reviewing code, explicitly call out ignored failures and crash risks.
-
-## 10. Testing rules
+## 10. Testing [STANDARD]
 
 For non-trivial new logic, add tests or explain why they are omitted.
 
-Prefer:
+**Non-trivial** = conditional branch affecting behavior, async cancellation/failure/retry, state persisting beyond function scope, public API consumed by other modules, date/number/currency computation. See `RULES/07-testing-debugging.md` for framework selection (Swift Testing vs XCTest) and platform-specific patterns.
 
-- Swift Testing or XCTest based on project setup
-- behavior-oriented tests
-- deterministic async tests
-- dependency injection around side effects
-- narrow seams over global mocking
+Prefer behavior-oriented tests, dependency injection, deterministic async tests.
 
-Avoid:
+## 11. Output Rules [STANDARD]
 
-- tests that only mirror implementation details
-- timing-flaky async tests
-- unbounded sleeps
-- giant integration tests for tiny logic
+- Prefer complete, copyable code over pseudo-code.
+- Preserve existing file style and naming; avoid rewriting unrelated code.
+- Include only necessary imports.
+- Mention migration impact when call sites or data flow change.
+- Note test additions or omissions.
+- Keep explanations short unless asked for detail.
 
-## 11. Output rules for AI-generated code
+## 12. Review Checklist [STANDARD]
 
-When producing code:
+Before finishing, verify: compile plausibility, thread-safety / actor-isolation, API compatibility, state ownership clarity, error propagation quality, test impact, logging / debug artifact cleanup.
 
-- prefer complete, copyable code over pseudo-code
-- preserve existing file style and naming
-- avoid rewriting unrelated code
-- include only the necessary imports
-- mention migration impact when call sites or data flow change
-- note test additions or omissions
-- keep explanations short unless asked for detail
+## 13. Local Project Addendum [REFERENCE]
 
-When context is incomplete, provide the safest minimal implementation and state assumptions.
+Append project-specific rules here: internal module naming, logging framework, dependency injection pattern, lint/formatting policy, analytics event naming, localization policy.
 
-## 12. Review checklist
+## 14. Security and Compliance [CRITICAL]
 
-Before finishing, verify:
+- Never hardcode secrets, tokens, private keys, or credentials.
+- Keep auth/session/token logic out of Views and ViewControllers.
+- Never log PII, tokens, or full request/response payloads.
+- Keychain for sensitive credentials; UserDefaults for preferences only.
+- Least-privilege for permissions and data collection.
+- No new third-party dependencies without a clear need and license check.
 
-- compile plausibility
-- thread-safety / actor-isolation plausibility
-- API compatibility impact
-- state ownership clarity
-- error propagation quality
-- test impact
-- logging / debug artifact cleanup
+Privacy tier classification — apply before finalizing any data-flow change:
+- **Tier 0** (on-device only): proceed normally.
+- **Tier 1** (device → first-party server): note data minimization and consent in output.
+- **Tier 2** (third-party or regulated domain): stop and surface compliance questions first.
 
-## 13. Local Project Addendum
+See `RULES/10-security-compliance.md` for Tier 2 triggers, Keychain actor pattern, and compliance output structure.
 
-Project-specific rules should be appended below this section by the team.
+## 15. Quality Gates and Acceptance Criteria [CRITICAL]
 
-Examples:
+Before finalizing a non-trivial change, output:
 
-- internal module naming
-- logging framework choice
-- dependency injection pattern
-- lint / formatting policy
-- analytics event naming
-- localization policy
+- **Scope:** what changed and what intentionally did not change.
+- **Verification:** what was run and what was not run.
+- **Risk:** compile / concurrency / migration / regression risks.
+- **Follow-up:** required next actions only.
 
-## 14. Security and compliance defaults
+Risk tiers:
+- **Low** (local refactor, no API/data-flow change) → targeted tests or rationale.
+- **Medium** (module logic change or public API touch) → add/update tests + migration note.
+- **High** (persistence schema / auth / payment / cross-module contract) → rollback strategy + monitoring notes.
 
-When generating or reviewing code, apply these baseline controls:
+## 16. Spec Governance [REFERENCE]
 
-- Never hardcode secrets, tokens, private keys, or environment credentials.
-- Keep authentication/session/token logic out of Views and ViewControllers.
-- Treat device/user identifiers as sensitive unless explicitly documented otherwise.
-- Do not log PII, tokens, or full request/response payloads in production paths.
-- Prefer Keychain for sensitive credentials, not `UserDefaults`.
-- Follow least-privilege access for permissions and data collection.
-- Avoid introducing new third-party dependencies without a clear need and license check.
-
-If a task can impact compliance (privacy, payments, healthcare, minors, regulated data), explicitly call out assumptions and unknowns before finalizing.
-
-## 15. Quality gates and acceptance criteria
-
-Before finalizing a non-trivial patch, include an acceptance summary:
-
-- Scope: what changed and what intentionally did not change.
-- Verification: what was run (build/tests/lint) and what was not run.
-- Risk check: compile risk, concurrency risk, migration risk, regression risk.
-- Rollout notes: feature flag, backward compatibility, data migration, or none.
-
-Risk-tier defaults:
-
-- Low risk: local refactor, no API/data-flow change -> targeted tests or rationale.
-- Medium risk: module logic change or public API touch -> add/update tests plus migration note.
-- High risk: persistence schema/auth/payment/cross-module contract change -> explicit rollback and monitoring notes.
-
-## 16. Spec governance and versioning
-
-Treat this repository as a living engineering spec:
-
-- Use semantic versioning for spec releases.
-- For every rule change, record: motivation, affected scenarios, migration impact.
-- Prefer additive, backward-compatible rule updates.
-- If breaking instruction behavior is needed, provide a transition window and examples.
-- Keep examples, prompts, and templates aligned with the latest rule set.
-
-If there is a conflict:
-
-1. task-specific user instruction
-2. Local Project Addendum
-3. AGENTS.md core rules
-4. deep-dive documents in `RULES/`
+Semantic versioning: PATCH = wording fixes; MINOR = additive rules; MAJOR = behavior-breaking changes. Every rule change must record motivation, affected scope, and migration guidance. See `templates/rule-change-commit-template.md`.
