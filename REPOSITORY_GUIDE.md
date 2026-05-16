@@ -18,6 +18,7 @@ Other `RULES/`, `PROMPTS/`, `templates/`, and `examples/` are supporting materia
 - `AGENTS-CORE.md`: Minimum enforcer — ~60-line distilled rule set for context-limited scenarios. Always load this when full spec cannot fit.
 - `CHATGPT.md`: Standalone ChatGPT instruction pack — paste into Custom Instructions. Derived from `AGENTS.md`.
 - `README.md`: Repository overview and quick-start guide.
+- `FAQ.md`: Common questions — rule conflicts, existing technology choices, testing, security, and spec governance.
 - `REPOSITORY_GUIDE.md`: This file.
 - `LICENSE`: MIT license.
 - `VERSION`: Spec version anchor.
@@ -33,7 +34,8 @@ Deep rule documents that expand the core policy in `AGENTS.md`. Load on demand f
 | `01b-ios-workflow.md` | iOS incremental delivery workflow |
 | `02-architecture.md` | Layer responsibilities, boundaries, and navigation patterns |
 | `02b-mvvm-boundaries.md` | MVVM boundary details and ViewModel splitting criteria |
-| `03-swift-style.md` | Swift naming, optional handling, error handling, comments |
+| `02c-dependency-injection.md` | DI styles (constructor/property/Environment), protocol-based testing, factory pattern |
+| `03-swift-style.md` | Swift naming, optional handling, error handling, comments, quantitative style thresholds |
 | `03b-apple-api-design.md` | Apple API Design Guidelines — naming, formatting, DocC, architecture idioms |
 | `04-concurrency.md` | Swift Concurrency — mental models, preferred APIs, SwiftUI pitfalls, review checklist |
 | `05-swiftui-ui.md` | SwiftUI and UIKit UI-layer guidance, view extraction heuristics |
@@ -45,6 +47,8 @@ Deep rule documents that expand the core policy in `AGENTS.md`. Load on demand f
 | `11-quality-gates.md` | Risk tiers and acceptance criteria template |
 | `12-spec-governance.md` | Spec versioning and governance |
 | `13-agent-behavior.md` | Agent behavior protocol — classification, scope control, verification, output contract |
+| `14-performance-optimization.md` | When to optimize, main thread rules, list/scroll/image/memory/networking performance |
+| `15-localization-accessibility.md` | String externalization, RTL, plurals, Dynamic Type, VoiceOver, accessibility attributes |
 
 ## Directory: `PROMPTS/`
 
@@ -83,6 +87,7 @@ Practical, copyable examples for common tool setups.
 
 | File | Purpose |
 |------|---------|
+| `claude-code-setup-example.md` | Claude Code setup — symlinks, per-project CLAUDE.md, Local Project Addendum |
 | `chatgpt-custom-instructions-example.md` | ChatGPT configuration example |
 | `customized-chatgpt-setup.md` | End-to-end ChatGPT setup example |
 | `codex-project-root-example.md` | Codex project-root setup example |

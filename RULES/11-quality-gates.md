@@ -1,5 +1,7 @@
 # Quality Gates
 
+Structured risk tiers and acceptance output template. For the step-by-step pre-delivery checklist, see [08-review-checklist.md](08-review-checklist.md).
+
 Move AI-generated code from "it runs" to "it can safely ship."
 
 ## Minimum Delivery Gates

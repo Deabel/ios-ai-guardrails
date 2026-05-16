@@ -15,8 +15,9 @@ Code should be understandable at a glance by teammates.
 
 ### Avoid
 
-- deep nesting
-- very long functions
+- deep nesting (more than 3 indent levels — extract into a function or use `guard`)
+- very long functions (aim for ≤ 40 lines; always justify if > 60 lines)
+- too many parameters (more than 4 — consider a configuration struct or named tuple)
 - extensions with unrelated responsibilities
 - clever generics/protocol gymnastics that hurt readability
 - force unwraps without documented invariants

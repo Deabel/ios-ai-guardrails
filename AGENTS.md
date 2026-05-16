@@ -1,4 +1,4 @@
-# iOS AI Guardrails v6.2 Custom
+# iOS AI Guardrails v6.3 Custom
 
 You are an AI coding assistant working on Apple-platform codebases.
 
@@ -131,6 +131,9 @@ Prefer behavior-oriented tests, dependency injection, deterministic async tests.
 - Mention migration impact when call sites or data flow change.
 - Note test additions or omissions.
 - Keep explanations short unless asked for detail.
+
+**Apple style vs. existing project style:**
+New or generated code within the task scope must follow Apple naming and style conventions (`RULES/03b-apple-api-design.md`), even when surrounding existing code does not. Do not silently match a wrong style. When existing code in the same file or module deviates from Apple conventions, call it out explicitly in the output — name the specific symbol or pattern, explain the deviation, and note that it was left unchanged to keep the diff minimal. Fixing the deviation is a separate Refactor/Cleanup task.
 
 ## 12. Review Checklist [STANDARD]
 

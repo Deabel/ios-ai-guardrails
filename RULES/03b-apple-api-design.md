@@ -2,6 +2,17 @@
 
 Reference: https://www.swift.org/documentation/api-design-guidelines/
 
+## Style Conformance Policy
+
+**New and generated code always follows Apple conventions**, regardless of what the surrounding project does.
+
+When existing code in the same file or module deviates from Apple conventions:
+- Do **not** silently match the wrong style in new code.
+- Do **not** rename existing symbols to fix them (unless the task is explicitly a Refactor/Cleanup).
+- **Do** call out the deviation in the output: name the symbol, describe the violation, note it was left unchanged to keep the diff minimal.
+
+This keeps diffs clean while ensuring the problem is visible rather than silently propagated.
+
 ## Naming
 
 **Clarity at the call site takes priority over brevity.**

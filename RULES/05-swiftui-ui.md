@@ -42,6 +42,49 @@ Do not split views mechanically based only on `body` length.
 
 Separate: `setupUI()`, `setupConstraints()`, `bindViewModel()`, `setupActions()`. No networking, database, complex mapping, or business rules in controllers.
 
+**Lifecycle responsibilities:**
+- `viewDidLoad`: UI setup, layout, initial ViewModel binding — runs once.
+- `viewWillAppear` / `viewDidAppear`: refresh-on-return state, analytics impression events only.
+- Never trigger network requests directly from lifecycle methods; delegate to the ViewModel.
+
+### ViewModel Binding Patterns
+
+**Closure-based (common):**
+
+```swift
+// ViewController owns the callback
+viewModel.onStateChange = { [weak self] state in
+    DispatchQueue.main.async { self?.render(state) }
+}
+```
+
+**Delegation (when the ViewModel needs a richer contract):**
+
+```swift
+protocol FeedViewModelDelegate: AnyObject {
+    func viewModel(_ vm: FeedViewModel, didLoad items: [FeedItem])
+    func viewModel(_ vm: FeedViewModel, didFail error: Error)
+}
+// ViewController conforms; ViewModel holds `weak var delegate`
+```
+
+Prefer closure bindings for simple one-way updates. Use delegation when the ViewModel must call back on multiple distinct events.
+
+### UICollectionView / UITableView Data Sources
+
+Prefer `UICollectionViewDiffableDataSource` / `UITableViewDiffableDataSource` for list screens. Feed snapshots from the ViewModel; never compute diff logic inside the ViewController.
+
+```swift
+// ViewModel publishes snapshot
+var snapshotPublisher: AnyPublisher<NSDiffableDataSourceSnapshot<Section, Item>, Never>
+
+// ViewController applies it
+viewModel.snapshotPublisher
+    .receive(on: DispatchQueue.main)
+    .sink { [weak self] snapshot in self?.dataSource.apply(snapshot) }
+    .store(in: &cancellables)
+```
+
 ### Custom UIView Extraction
 
 **Extract a custom UIView subclass when:**

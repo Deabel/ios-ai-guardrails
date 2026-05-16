@@ -1,4 +1,4 @@
-# iOS AI Guardrails — Core Rules (v6.2)
+# iOS AI Guardrails — Core Rules (v6.3)
 
 > This file contains the minimum enforced rules. Always apply these regardless of context size.
 > Full spec: `AGENTS.md` | Deep reference: `RULES/` | Apple style: `RULES/03b-apple-api-design.md`
@@ -33,6 +33,8 @@
 - Booleans read as assertions: `isEmpty`, `isLoading`, `canRetry`
 - No invented abbreviations: `viewController` not `vc`, `manager` not `mgr`
 - Clarity at the call site over brevity
+
+**When existing code violates Apple style:** new/generated code within scope still follows Apple conventions. Do not silently match the wrong style. Call out each deviation by name, note it was left unchanged to keep the diff minimal, and flag it as a follow-up Refactor/Cleanup task.
 
 ## Before Finishing Any Non-Trivial Change
 

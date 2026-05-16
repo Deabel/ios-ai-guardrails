@@ -30,6 +30,24 @@ Recommended:
 - typed key
 - explicit default-value strategy
 
+**Pattern — typed key wrapper:**
+
+```swift
+// Centralize all keys and defaults in one place
+enum AppPreferences {
+    @UserDefault(key: "isOnboardingComplete", defaultValue: false)
+    static var isOnboardingComplete: Bool
+
+    @UserDefault(key: "preferredTheme", defaultValue: "system")
+    static var preferredTheme: String
+}
+
+// Read/write at call sites — no raw string keys in feature code
+AppPreferences.isOnboardingComplete = true
+```
+
+The `@UserDefault` property wrapper can be project-specific; the key point is that raw `UserDefaults.standard.set(_:forKey:)` calls must not be scattered across ViewModels and ViewControllers.
+
 ## Database
 
 Place database access in boundaries such as store/repository/manager.

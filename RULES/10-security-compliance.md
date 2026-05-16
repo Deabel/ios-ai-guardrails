@@ -18,6 +18,30 @@
 - Keychain calls are synchronous and blocking — call from a background actor, not on MainActor.
 - Never log Keychain values, even in debug builds.
 
+**Pattern — KeychainStore actor:**
+
+```swift
+// All Keychain access lives here; callers use async/await
+actor KeychainStore {
+    func save(_ value: String, for key: String) throws {
+        // SecItemAdd / SecItemUpdate — synchronous, safe to block inside actor
+    }
+
+    func load(for key: String) throws -> String {
+        // SecItemCopyMatching — synchronous
+    }
+
+    func delete(for key: String) throws {
+        // SecItemDelete
+    }
+}
+
+// Usage from a Service or ViewModel — always await, never on MainActor directly
+let token = try await keychainStore.load(for: "authToken")
+```
+
+Using an `actor` ensures only one call touches Keychain at a time, avoids blocking MainActor, and keeps SecItem calls out of feature code.
+
 ## Permissions
 
 - Document business purpose and minimum scope when adding system permissions (camera, microphone, location, contacts, etc.).
