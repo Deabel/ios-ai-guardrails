@@ -42,6 +42,19 @@ let token = try await keychainStore.load(for: "authToken")
 
 Using an `actor` ensures only one call touches Keychain at a time, avoids blocking MainActor, and keeps SecItem calls out of feature code.
 
+## Detecting Existing Violations
+
+When reviewing or modifying existing code, surface the following as **required follow-up security fixes** — name the file and line, explain the risk, do not leave them undocumented:
+
+| Violation found | Action |
+|-----------------|--------|
+| Hardcoded API key, token, or credential string | Flag as critical; note it must be moved to environment config or a secrets manager |
+| `print` / `os_log` / `Logger` statement capturing a token, password, or user PII field | Flag as critical; note the log statement must be removed or sanitized |
+| Auth token, password, or private key stored in `UserDefaults` | Flag as critical; note it must be migrated to Keychain |
+| Existing data flow sending data to a third-party service or regulated domain without a documented privacy tier | Flag as required compliance audit |
+
+These are **Tier A violations** — do not silently pass them by even when they are outside your task scope.
+
 ## Permissions
 
 - Document business purpose and minimum scope when adding system permissions (camera, microphone, location, contacts, etc.).

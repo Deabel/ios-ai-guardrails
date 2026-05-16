@@ -1,5 +1,11 @@
 # Swift Style
 
+## Detecting Existing Violations
+
+These rules apply to new and modified code. When existing code in scope violates a threshold, follow the two-tier policy in `AGENTS.md §11b`:
+- **Force unwrap without invariant comment, empty `catch`, unexplained `try?`** → Tier A: flag as required fix, do not propagate.
+- **Function > 60 lines, nesting > 3 levels, parameter count > 4** → Tier B: flag as follow-up Refactor, do not silently worsen.
+
 ## Overall Style
 
 Code should be understandable at a glance by teammates.

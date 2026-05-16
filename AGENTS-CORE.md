@@ -36,6 +36,23 @@
 
 **When existing code violates Apple style:** new/generated code within scope still follows Apple conventions. Do not silently match the wrong style. Call out each deviation by name, note it was left unchanged to keep the diff minimal, and flag it as a follow-up Refactor/Cleanup task.
 
+## Violation Detection (When Reviewing or Modifying Existing Code)
+
+**Always flag — do not propagate:**
+- Hardcoded secrets / tokens / credentials
+- PII or tokens in logs
+- Auth tokens / passwords in UserDefaults instead of Keychain
+- Networking, DB writes, or business logic in View / ViewController
+- Data flow involving third-party or regulated domain (health, minors, payments) without a documented privacy tier
+
+**Flag as follow-up Refactor/Cleanup — do not silently worsen:**
+- Function > 60 lines; nesting > 3 levels; parameters > 4; dependencies > 4
+- Empty `catch`, unexplained `try?`, force unwrap without invariant comment
+- Missing `@MainActor` on UI-facing observable state
+- Fat ViewController; screen missing loading/empty/error state
+
+In both cases: name the symbol, cite the rule, note it was left unchanged to keep the diff minimal.
+
 ## Before Finishing Any Non-Trivial Change
 
 Output these four sections:

@@ -55,7 +55,7 @@ Hard boundaries:
 
 Navigation: For Coordinator pattern (UIKit) and `NavigationStack` (SwiftUI) guidance, see `RULES/02-architecture.md`.
 
-Prefer fitting into the current codebase over forcing a textbook architecture.
+Prefer fitting into the current codebase over forcing a textbook architecture. **Exception: when the existing pattern violates a Hard Prohibition (networking in Views, scattered UserDefaults writes, business rules in UI components), do not propagate the violation — flag it and propose a compliant path as a follow-up task.**
 
 ## 4. Data Placement [STANDARD]
 
@@ -134,6 +134,38 @@ Prefer behavior-oriented tests, dependency injection, deterministic async tests.
 
 **Apple style vs. existing project style:**
 New or generated code within the task scope must follow Apple naming and style conventions (`RULES/03b-apple-api-design.md`), even when surrounding existing code does not. Do not silently match a wrong style. When existing code in the same file or module deviates from Apple conventions, call it out explicitly in the output — name the specific symbol or pattern, explain the deviation, and note that it was left unchanged to keep the diff minimal. Fixing the deviation is a separate Refactor/Cleanup task.
+
+## 11b. Violation Detection Policy [CRITICAL]
+
+When reviewing or modifying existing code, apply two tiers:
+
+**Tier A — Required flag (security and hard prohibitions):**
+Do not propagate. Flag immediately in output, name the exact location, and mark as a required follow-up fix.
+Triggers:
+- Hardcoded secrets, tokens, or credentials found anywhere in the file
+- PII, tokens, or full payloads logged at any log level
+- Sensitive data (auth tokens, passwords, keys) stored in UserDefaults instead of Keychain
+- Networking, database writes, or business logic inside a View or ViewController
+- Scattered `UserDefaults` writes across unrelated feature code
+- Existing data flow involving third-party services or regulated domains (health, minors, payments, biometrics) without a documented privacy tier
+- Duplicate `Task` strong reference alongside `.task {}` on the same view (concurrency bug)
+- `@MainActor` missing on a class or method that mutates UI-facing observable state
+
+**Tier B — Optional flag (code quality thresholds):**
+Do not silently worsen. If the code you are modifying already violates a quality threshold, flag it in output notes as a follow-up Refactor/Cleanup candidate. Do not fix it unless the task scope explicitly includes it.
+Triggers:
+- Function body > 60 lines
+- Nesting depth > 3 levels
+- Parameter count > 4 with no configuration struct
+- Dependency count > 4 in a single type
+- `Task.detached` used for routine work with no isolation-escape justification
+- Empty `catch` or `try?` on a meaningful operation with no explanation
+- Force unwrap without a documented invariant comment
+- Fat ViewController with entangled UI setup, binding, and business logic
+- Screen missing loading / empty / error state handling
+- Existing code using an unnecessary intermediate mapping layer
+
+In both tiers: name the symbol or location, state the rule it violates, and note it was left unchanged to keep the diff minimal. Do not silently accept violations or write new code that makes them worse.
 
 ## 12. Review Checklist [STANDARD]
 
