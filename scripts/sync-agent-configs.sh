@@ -136,6 +136,13 @@ copy_or_bundle() {
   local label="$3"
   local temp_output=""
 
+  # Guard: symlink targets would cause cp to overwrite the symlink's source file.
+  if [[ -L "$dst" ]]; then
+    echo "[$label] SKIPPED: $dst is a symlink — remove it first (setup-symlinks.sh mode), or switch to file-copy mode." >&2
+    FAILURES=$((FAILURES + 1))
+    return 0
+  fi
+
   local dst_dir
   dst_dir="$(dirname "$dst")"
 

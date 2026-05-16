@@ -4,7 +4,9 @@
       "Bash(bash scripts/sync-agent-configs.sh)",
       "Bash(wc -l ~/.codex/AGENTS.md ~/.claude/CLAUDE.md && echo \"---\" && ls RULES/ | wc -l && echo \"RULES files\")",
       "Bash(chmod +x scripts/setup-symlinks.sh)",
-      "Bash(bash scripts/setup-symlinks.sh)"
+      "Bash(bash scripts/setup-symlinks.sh)",
+      "Bash(git checkout *)",
+      "Bash(rm .git/hooks/post-commit && echo \"post-commit hook removed\")"
     ]
   }
 }
