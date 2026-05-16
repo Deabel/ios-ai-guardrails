@@ -12,11 +12,12 @@ Helper scripts for installing and syncing the iOS AI Guardrails spec.
 
 | Script | Purpose | Modifies | Reversible |
 |--------|---------|---------|-----------|
-| `sync-agent-configs.sh` | Bundle AGENTS.md + RULES/ into Codex and Claude targets | `~/.codex/AGENTS.md`, `~/.claude/CLAUDE.md` | Re-run with previous content |
-| `install-project-agents.sh` | Copy AGENTS.md into the current project root | Current working directory | Delete the copied file |
-| `install-codex-global.sh` | Copy AGENTS.md to `~/.codex/AGENTS.md` | Global Codex config | Delete `~/.codex/AGENTS.md` |
-| `install-post-commit-sync-hook.sh` | Install git post-commit hook that auto-runs sync | `.git/hooks/post-commit` | Delete the hook file |
+| `setup-symlinks.sh` | **Recommended.** Create symlinks so Claude/Codex always use the latest AGENTS.md — no sync needed | `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md` (as symlinks) | `rm` the symlink |
 | `print-chatgpt-snippet.sh` | Print ChatGPT custom instructions to stdout | Nothing | N/A |
+| `install-project-agents.sh` | Copy AGENTS.md into a target project directory | Target project directory | Delete the copied file |
+| `install-codex-global.sh` | Copy AGENTS.md to `~/.codex/AGENTS.md` (file copy, not symlink) | Global Codex config | Delete `~/.codex/AGENTS.md` |
+| `sync-agent-configs.sh` | Bundle AGENTS.md + RULES/ into Codex and Claude targets | `~/.codex/AGENTS.md`, `~/.claude/CLAUDE.md` | Re-run with previous content |
+| `install-post-commit-sync-hook.sh` | Install git post-commit hook that auto-runs sync | `.git/hooks/post-commit` | Delete the hook file |
 
 ## Deployment Modes
 

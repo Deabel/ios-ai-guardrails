@@ -2,152 +2,99 @@
 
 A customized, cross-tool guardrails repository for Apple-platform development.
 
-This version is tuned for an iOS engineer workflow that prefers:
-
-- Swift first
-- Swift Concurrency first
-- SwiftUI first for new UI
-- UIKit compatibility for existing modules
-- MVVM as the default application-layer shape
-- Apple-style naming and API design
-- pragmatic refactors instead of speculative rewrites
-- code that can actually land in a production app
+Tuned for an iOS engineer workflow that prefers Swift + Swift Concurrency first, SwiftUI for new UI, MVVM as the default application shape, and Apple-style naming and API design.
 
 ## Goals
 
-Use one shared rule system across:
+One shared rule system across:
 
-- ChatGPT
-- Xcode Codex
 - Claude / Claude Code
-- other agent-style tools that can read `AGENTS.md`
+- Xcode Codex
+- ChatGPT
+- Other agent-style tools that read `AGENTS.md`
 
-## Recommended usage
+## Three-Tier Loading
 
-### ChatGPT
+Load the smallest tier that fits your context budget:
 
-Copy `CHATGPT.md` into your custom instructions, then paste in project-specific context when needed.
+| Tier | File | Lines | When to use |
+|------|------|-------|-------------|
+| Core | `AGENTS-CORE.md` | ~60 | Context-limited models, smallest system prompt |
+| Standard | `AGENTS.md` | ~175 | Claude, ChatGPT, Codex — normal usage |
+| Full | `AGENTS.md` + `RULES/` | ~1100 | Deep reference tasks, spec audits |
+
+## Setup by Tool
+
+### Claude Code
+
+**Global (applies to all projects):**
+
+```bash
+# Symlink — changes to AGENTS.md take effect immediately
+ln -sf "$(pwd)/AGENTS.md" ~/.claude/CLAUDE.md
+```
+
+**Per-project:** place `AGENTS.md` in the project root, or add project-specific rules under the Local Project Addendum section (§13).
 
 ### Xcode Codex
 
-Use either:
+**Global:**
 
-- project-level `AGENTS.md` at repo root, or
-- global `~/.codex/AGENTS.md`
+```bash
+ln -sf "$(pwd)/AGENTS.md" ~/.codex/AGENTS.md
+```
 
-You can install the global variant with:
+Or install via script (copies rather than links):
 
 ```bash
 bash scripts/install-codex-global.sh
 ```
 
-Auto-sync on commit (Codex + Claude targets):
+**Per-project:** place `AGENTS.md` in the project root.
+
+### ChatGPT
+
+Copy `CHATGPT.md` into your ChatGPT Custom Instructions. Paste project-specific context when starting a session.
+
+```bash
+bash scripts/print-chatgpt-snippet.sh
+```
+
+### Auto-sync on commit (alternative to symlinks)
 
 ```bash
 bash scripts/install-post-commit-sync-hook.sh
 ```
 
-Default sync targets:
+After each commit, `sync-agent-configs.sh` bundles `AGENTS.md` + `RULES/` and writes to `~/.codex/AGENTS.md` and `~/.claude/CLAUDE.md`. See `scripts/README.md` for options.
 
-- Codex: `~/.codex/AGENTS.md` (from repo `AGENTS.md`)
-- Claude Code: `~/.claude/CLAUDE.md` (default source is repo `AGENTS.md` for full-rule fidelity)
+## Repository Structure
 
-Default sync mode:
-
-- Runtime bundle mode is enabled by default.
-- The synced file contains:
-  - base rules source (`AGENTS.md` by default)
-  - inlined `RULES/*.md` content
-  - absolute repository paths for direct file resolution
-
-You can override target paths:
-
-```bash
-CODEX_TARGET=/custom/AGENTS.md CLAUDE_TARGET=/custom/CLAUDE.md git commit -m "..."
+```
+AGENTS-CORE.md          Minimum enforcer (~60 lines)
+AGENTS.md               Primary spec — single source of truth
+CHATGPT.md              Standalone ChatGPT instruction pack
+CLAUDE.md               Claude-specific entry guide
+README.md               This file
+REPOSITORY_GUIDE.md     Full file/directory map with descriptions
+RULES/                  Deep rule documents (load on demand)
+PROMPTS/                Reusable task prompts
+templates/              Copy-paste starters for setup and review
+examples/               Concrete tool setup walkthroughs
+scripts/                Installation and sync helpers
 ```
 
-You can override Claude sync source (for example, to use compact entry file):
+See `REPOSITORY_GUIDE.md` for descriptions of every file.
 
-```bash
-CLAUDE_SOURCE=/path/to/repo/CLAUDE.md git commit -m "..."
-```
+## Suggested Operating Pattern
 
-You can disable bundling and copy source files directly:
+1. Use `AGENTS-CORE.md` as the minimum enforced baseline.
+2. Put `AGENTS.md` in the project root and add project-specific constraints in §13 Local Project Addendum.
+3. Use `PROMPTS/` templates instead of rewriting the same task prompt each time.
+4. Reference `RULES/` files for depth when needed — they do not need to be loaded every session.
+5. Version rule changes with `templates/rule-change-commit-template.md`.
 
-```bash
-bash scripts/sync-agent-configs.sh --no-runtime-bundle
-```
+## Governance
 
-By default, sync is best-effort (warnings only). To fail on sync errors:
-
-```bash
-STRICT_SYNC=1 bash scripts/sync-agent-configs.sh
-```
-
-### Claude
-
-Use `CLAUDE.md` as the project instruction entry, or copy its contents into the tool's project instructions.
-
-## Structure
-
-- `AGENTS.md`: single source of truth
-- `CHATGPT.md`: compact ChatGPT instruction pack
-- `CODEX.md`: Codex-specific operating rules
-- `CLAUDE.md`: Claude-specific operating rules
-- `REPOSITORY_GUIDE.md`: full file/folder explanation map
-- `RULES/`: modular deep rules
-- `PROMPTS/`: reusable prompts
-- `templates/`: starter snippets you can paste into tools
-- `examples/`: concrete usage examples
-- `scripts/`: installation helpers
-
-## Minimal Enforcement Set (Recommended for Reliability)
-
-If a tool cannot reliably ingest all files each turn, enforce this minimum set first:
-
-1. `AGENTS.md`
-2. `RULES/13-agent-behavior.md`
-3. `RULES/11-quality-gates.md`
-4. `RULES/10-security-compliance.md`
-
-Everything else should be treated as expansion or examples, not a competing source of truth.
-
-New in this repo hardening layer:
-
-- `RULES/10-security-compliance.md`: security and compliance baseline
-- `RULES/11-quality-gates.md`: risk-tiered delivery gates
-- `RULES/12-spec-governance.md`: versioning and rule governance
-- `RULES/13-agent-behavior.md`: action protocol for analysis, questions, scope control, updates, and verification
-- `PROMPTS/audit-guardrails.md`: periodic spec audit prompt
-- `templates/ai-change-review-checklist.md`: PR/review execution checklist
-
-## What changed in v6.2 custom
-
-This custom edition strengthens:
-
-- MVVM-oriented layering
-- async/await and actor guidance
-- UIKit + SwiftUI coexistence rules
-- repository / service / persistence boundaries
-- UserDefaults placement rules
-- API client reuse rules
-- Chinese team-comment guidance
-- copyable response format expectations for AI tools
-- review checklist items for crash risk, thread-safety, migration risk, and test impact
-- explicit agent behavior rules for task classification, context inspection, escalation, and final acceptance summaries
-
-## Suggested operating pattern
-
-1. Put `AGENTS.md` in the project root.
-2. Add project-specific constraints below the "Local Project Addendum" section.
-3. Keep rules short and enforceable.
-4. Put long explanations in `RULES/`.
-5. Reuse the prompt templates from `PROMPTS/` instead of rewriting the same ask every time.
-
-## Industry-style adoption workflow
-
-1. `Baseline`: enforce `AGENTS.md` as the top-level source of truth.
-2. `Execution`: use `PROMPTS/` + `templates/` to standardize AI task inputs/outputs.
-3. `Governance`: version rule changes and require migration notes for breaking behavior.
-4. `Quality`: apply risk-tier gates before landing non-trivial patches.
-5. `Audit`: run periodic spec audits using `PROMPTS/audit-guardrails.md`.
+Semantic versioning: PATCH = wording; MINOR = additive rules; MAJOR = behavior-breaking change.
+Every rule change records: motivation, affected scope, migration guidance.

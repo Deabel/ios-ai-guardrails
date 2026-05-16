@@ -122,7 +122,11 @@ Prefer behavior-oriented tests, dependency injection, deterministic async tests.
 ## 11. Output Rules [STANDARD]
 
 - Prefer complete, copyable code over pseudo-code.
+- Prefer editing existing files over creating new ones unless a new type is clearly justified.
 - Preserve existing file style and naming; avoid rewriting unrelated code.
+- Preserve public API signatures unless the task explicitly allows changing them.
+- Do not rename symbols broadly unless the task is explicitly a refactor.
+- Do not touch unrelated formatting in the same patch.
 - Include only necessary imports.
 - Mention migration impact when call sites or data flow change.
 - Note test additions or omissions.
